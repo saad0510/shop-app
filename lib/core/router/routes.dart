@@ -1,10 +1,8 @@
 import 'package:get/get_navigation/get_navigation.dart';
 
-import '../../features/home/view/home_screen.dart';
-import '../../features/screens.dart';
-import '../../features/signup/view/complete_profile_screen.dart';
-import '../../features/signup/view/otp_screen.dart';
-import '../../features/signup/view/signup_screen.dart';
+import '../../features/auth/presentation/screens.dart';
+import '../../features/home/presentation/screens.dart';
+import '../../features/onboarding/presentation/screens.dart';
 
 class Routes {
   Routes._();

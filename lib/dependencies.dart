@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
-import 'features/controllers.dart';
+import 'features/auth/presentation/controllers.dart';
+import 'features/onboarding/presentation/controllers.dart';
 
 void setupDependencies() {
   // TODO: init and dispose when necessary
