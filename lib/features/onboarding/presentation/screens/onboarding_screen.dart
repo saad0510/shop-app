@@ -4,8 +4,8 @@ import 'package:get/route_manager.dart';
 import 'package:get/instance_manager.dart';
 
 import '../../../../core/extensions/context.dart';
-import '../../../../core/constants/durations.dart';
-import '../../../../core/router/routes.dart';
+import '../../../../app/constants/durations.dart';
+import '../../../../app/router/routes.dart';
 import '../controllers/onboarding_controller.dart';
 import '../widgets.dart';
 import '../controllers.dart';

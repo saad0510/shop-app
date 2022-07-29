@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
+import '../../../../app/assets/images.dart';
+import '../../../../app/router/routes.dart';
 import '../widgets/screen_fit_box.dart';
-import '../../../../core/constants/assets.dart';
-import '../../../../core/router/routes.dart';
 
 class SigninSuccessScreen extends StatelessWidget {
   const SigninSuccessScreen({Key? key}) : super(key: key);

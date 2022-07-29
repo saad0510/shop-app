@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/constants/durations.dart';
+import '../../../../app/constants/durations.dart';
 import '../controllers.dart';
 
 class PageDotBar extends StatelessWidget {

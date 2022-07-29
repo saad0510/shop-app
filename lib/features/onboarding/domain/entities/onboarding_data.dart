@@ -1,4 +1,4 @@
-import '../../../../core/constants/assets.dart';
+import '../../../../app/assets/images.dart';
 import 'onboarding_page.dart';
 
 const List<OnboardingPage> dataOfOnboardinPages = [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../../core/constants/assets.dart';
+import '../../../../../app/assets/svg_icons.dart';
 
 class BaseFormField extends StatelessWidget {
   const BaseFormField({

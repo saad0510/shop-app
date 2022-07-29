@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/themes/app_theme.dart';
+import '../../../../../app/themes/app_theme.dart';
 import 'opt_digits_field.dart';
 
 class OtpInputField extends StatelessWidget {

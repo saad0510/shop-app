@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/assets.dart';
+import '../../../../app/assets/svg_icons.dart';
 import 'social_icon.dart';
 
 class SocialActionsBar extends StatelessWidget {

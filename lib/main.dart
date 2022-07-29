@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
-import 'core/router/routes.dart';
-import 'core/themes/app_theme.dart';
+import 'app/router/routes.dart';
+import 'app/themes/app_theme.dart';
 import 'dependencies.dart';
 
 void main() {

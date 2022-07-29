@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/router/routes.dart';
+import '../../../../app/router/routes.dart';
 import 'text_action.dart';
 
 class NoAccountAction extends StatelessWidget {

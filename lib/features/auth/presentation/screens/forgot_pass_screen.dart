@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/screen_fit_box.dart';
-import '../../../../core/constants/assets.dart';
+import '../../../../app/assets/svg_icons.dart';
 import '../widgets.dart';
+import '../widgets/screen_fit_box.dart';
 
 class ForgotPassScreen extends StatelessWidget {
   const ForgotPassScreen({Key? key}) : super(key: key);

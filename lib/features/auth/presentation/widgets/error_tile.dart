@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../core/constants/assets.dart';
+import '../../../../app/assets/svg_icons.dart';
 
 class ErrorTile extends StatelessWidget {
   const ErrorTile({Key? key, required this.error}) : super(key: key);

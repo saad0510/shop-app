@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../core/constants/assets.dart';
-import '../../../../../core/router/routes.dart';
-import '../../widgets.dart';
+import '../../../../../app/assets/svg_icons.dart';
+import '../../../../../app/router/routes.dart';
 import '../../controllers.dart';
+import '../../widgets.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({Key? key}) : super(key: key);
