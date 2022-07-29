@@ -7,7 +7,7 @@ class UserData {
   final String phone;
   final String address;
 
-  UserData({
+  const UserData({
     required this.uid,
     required this.email,
     required this.password,

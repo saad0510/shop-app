@@ -1,15 +1,21 @@
-abstract class Failure implements Exception {
+abstract class Failure {
   final String message;
 
-  Failure([this.message = ""]);
+  const Failure(this.message);
 
   @override
   bool operator ==(covariant Failure other) {
-    if (identical(this, other)) return true;
-
-    return other.message == message;
+    return identical(this, other) || other.message == message;
   }
 
   @override
   int get hashCode => message.hashCode;
+}
+
+class AuthFailure extends Failure {
+  const AuthFailure([String message = ""]) : super(message);
+}
+
+class CacheFailure extends Failure {
+  const CacheFailure([String message = ""]) : super(message);
 }
