@@ -8,8 +8,8 @@ void main() {
 
   setUp(() {
     expectedFailure = "this is an exception";
-    authFailure = AuthFailure("this is an exception");
-    authFailure2 = AuthFailure("this is an exception");
+    authFailure = const AuthFailure("this is an exception");
+    authFailure2 = const AuthFailure("this is an exception");
   });
 
   test(

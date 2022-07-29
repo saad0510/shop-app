@@ -17,12 +17,12 @@ class MockAuthLocalDataSource extends Mock implements AuthLocalDataSource {}
 class MockNetworkInfo extends Mock implements NetworkInfo {}
 
 void main() {
-  late final MockAuthRemoteDataSource mockAuthRemoteDataSrc;
-  late final MockAuthLocalDataSource mockAuthLocalDataSrc;
-  late final MockNetworkInfo mockNetworkInfo;
-  late final AuthRepositoryImp repo;
+  late MockAuthRemoteDataSource mockAuthRemoteDataSrc;
+  late MockAuthLocalDataSource mockAuthLocalDataSrc;
+  late MockNetworkInfo mockNetworkInfo;
+  late AuthRepositoryImp repo;
 
-  setUpAll(() {
+  setUp(() {
     mockAuthRemoteDataSrc = MockAuthRemoteDataSource();
     mockAuthLocalDataSrc = MockAuthLocalDataSource();
     mockNetworkInfo = MockNetworkInfo();
@@ -52,10 +52,10 @@ void main() {
   }
 
   group("signin:", () {
-    late final AuthUser authUser;
-    late final UserData userData;
+    late AuthUser authUser;
+    late UserData userData;
 
-    setUpAll(() {
+    setUp(() {
       authUser = const AuthUser(
         uid: "no-uid",
         email: "acc1@fin.com",
@@ -157,10 +157,10 @@ void main() {
   });
 
   group("signup:", () {
-    late final AuthUser authUser;
-    late final UserData userData;
+    late AuthUser authUser;
+    late UserData userData;
 
-    setUpAll(() {
+    setUp(() {
       authUser = const AuthUser(
         uid: "no-uid",
         email: "acc1@fin.com",

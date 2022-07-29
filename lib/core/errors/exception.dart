@@ -19,3 +19,7 @@ class AuthException extends BaseException {
 class CacheException extends BaseException {
   const CacheException([String message = ""]) : super(message);
 }
+
+class DatabaseException extends BaseException {
+  const DatabaseException([String message = ""]) : super(message);
+}

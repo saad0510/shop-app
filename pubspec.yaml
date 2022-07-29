@@ -18,6 +18,7 @@ dependencies:
   mocktail: ^0.3.0
   firebase_auth: ^3.6.1
   firebase_core: ^1.20.0
+  cloud_firestore: ^3.4.2
 
 dev_dependencies:
   flutter_test:

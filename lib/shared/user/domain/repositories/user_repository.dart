@@ -5,5 +5,5 @@ import '../entities/user_data.dart';
 
 abstract class UserRepository {
   Future<Result<Failure, UserData>> getUser(String uid);
-  Future<Result<Failure, bool>> saveUser(UserData userData);
+  Future<Result<Failure, void>> saveUser(UserData userData);
 }
