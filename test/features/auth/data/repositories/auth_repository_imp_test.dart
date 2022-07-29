@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
+import 'package:shopping_app/shared/user/data/models/user_data_model.dart';
 import 'package:shopping_app/core/errors/exception.dart';
 import 'package:shopping_app/core/errors/failure.dart';
 import 'package:shopping_app/core/platform/network_info.dart';
@@ -53,7 +53,7 @@ void main() {
 
   group("signin:", () {
     late AuthUser authUser;
-    late UserData userData;
+    late UserDataModel userData;
 
     setUp(() {
       authUser = const AuthUser(
@@ -61,7 +61,7 @@ void main() {
         email: "acc1@fin.com",
         password: "test123",
       );
-      userData = const UserData(
+      userData = const UserDataModel(
         uid: "1",
         email: "acc1@fin.com",
         password: "test123",
@@ -85,7 +85,7 @@ void main() {
           when(() => mockAuthLocalDataSrc.cacheUserData(any()))
               .thenAnswer((_) async {});
           // act
-          final result = await repo.signin(authUser.email, authUser.password);
+          final result = await repo.signin(authUser);
           // assert +ve
           expect(result, Success(userData));
           verifyCalledOnce(
@@ -106,7 +106,7 @@ void main() {
           when(() => mockAuthRemoteDataSrc.signin(any(), any()))
               .thenThrow(const AuthException());
           // act
-          final result = await repo.signin(authUser.email, authUser.password);
+          final result = await repo.signin(authUser);
           // assert
           expect(result, const Error(AuthFailure()));
           verifyCalledOnce(
@@ -128,7 +128,7 @@ void main() {
           when(() => mockAuthLocalDataSrc.getLastUserData())
               .thenAnswer((_) async => userData);
           // act
-          final result = await repo.signin(authUser.email, authUser.password);
+          final result = await repo.signin(authUser);
           // assert +ve
           expect(result, Success(userData));
           verifyCalledOnce(() => mockAuthLocalDataSrc.getLastUserData());
@@ -144,7 +144,7 @@ void main() {
           when(() => mockAuthLocalDataSrc.getLastUserData())
               .thenThrow(const CacheException());
           // act
-          final result = await repo.signin(authUser.email, authUser.password);
+          final result = await repo.signin(authUser);
           // assert +ve
           expect(result, const Error(CacheFailure()));
           verifyCalledOnce(() => mockAuthLocalDataSrc.getLastUserData());
@@ -158,7 +158,7 @@ void main() {
 
   group("signup:", () {
     late AuthUser authUser;
-    late UserData userData;
+    late UserDataModel userData;
 
     setUp(() {
       authUser = const AuthUser(
@@ -166,7 +166,7 @@ void main() {
         email: "acc1@fin.com",
         password: "test123",
       );
-      userData = const UserData(
+      userData = const UserDataModel(
         uid: "1",
         email: "acc1@fin.com",
         password: "test123",
@@ -190,7 +190,7 @@ void main() {
           when(() => mockAuthLocalDataSrc.cacheUserData(any()))
               .thenAnswer((_) async {});
           // act
-          final result = await repo.signup(authUser.email, authUser.password);
+          final result = await repo.signup(authUser);
           // assert +ve
           expect(result, Success(userData));
           verifyCalledOnce(
@@ -211,7 +211,7 @@ void main() {
           when(() => mockAuthRemoteDataSrc.signup(any(), any()))
               .thenThrow(const AuthException());
           // act
-          final result = await repo.signup(authUser.email, authUser.password);
+          final result = await repo.signup(authUser);
           // assert
           expect(result, const Error(AuthFailure()));
           verifyCalledOnce(
@@ -233,7 +233,7 @@ void main() {
           when(() => mockAuthLocalDataSrc.getLastUserData())
               .thenAnswer((_) async => userData);
           // act
-          final result = await repo.signup(authUser.email, authUser.password);
+          final result = await repo.signup(authUser);
           // assert +ve
           expect(result, Success(userData));
           verifyCalledOnce(() => mockAuthLocalDataSrc.getLastUserData());
@@ -249,7 +249,7 @@ void main() {
           when(() => mockAuthLocalDataSrc.getLastUserData())
               .thenThrow(const CacheException());
           // act
-          final result = await repo.signup(authUser.email, authUser.password);
+          final result = await repo.signup(authUser);
           // assert +ve
           expect(result, const Error(CacheFailure()));
           verifyCalledOnce(() => mockAuthLocalDataSrc.getLastUserData());

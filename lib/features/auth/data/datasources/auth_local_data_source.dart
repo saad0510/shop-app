@@ -1,15 +1,13 @@
-import '../../../../shared/user/domain/entities/user_data.dart';
-
-// TODO: return models, not entities
+import '../../../../shared/user/data/models/user_data_model.dart';
 
 abstract class AuthLocalDataSource {
-  /// stores the given userData in local cache
+  /// stores the given UserData in local cache
   ///
   /// throws a [CacheException] for all error codes
-  Future<void> cacheUserData(UserData userData);
+  Future<void> cacheUserData(UserDataModel userData);
 
-  /// retrives the last cached user data
+  /// retrives the last cached UserData
   ///
   /// throws a [CacheException] for all error codes
-  Future<UserData> getLastUserData();
+  Future<UserDataModel> getLastUserData();
 }

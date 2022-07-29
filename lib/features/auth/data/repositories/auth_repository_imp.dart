@@ -1,13 +1,15 @@
 import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../shared/user/domain/entities/user_data.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/platform/network_info.dart';
+import '../../../../shared/user/domain/entities/user_data.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
+
+// TODO: make dependencies private
 
 class AuthRepositoryImp implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -21,32 +23,14 @@ class AuthRepositoryImp implements AuthRepository {
   });
 
   @override
-  Future<Result<Failure, UserData>> continueWithGoogle(AuthUser user) {
-    // TODO: implement continueWithGoogle
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Result<Failure, UserData>> forgotPassword(AuthUser email) {
-    // TODO: implement forgotPassword
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Result<Failure, UserData>> sendOtp(AuthUser email) {
-    // TODO: implement sendOtp
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Result<Failure, UserData>> signin(
-    String email,
-    String password,
-  ) async {
+  Future<Result<Failure, UserData>> signin(AuthUser authUser) async {
     try {
       bool isConnected = await networkInfo.isConnected;
       if (isConnected) {
-        final userData = await remoteDataSource.signin(email, password);
+        final userData = await remoteDataSource.signin(
+          authUser.email,
+          authUser.password,
+        );
         await localDataSource.cacheUserData(userData);
         return Success(userData);
       }
@@ -60,14 +44,14 @@ class AuthRepositoryImp implements AuthRepository {
   }
 
   @override
-  Future<Result<Failure, UserData>> signup(
-    String email,
-    String password,
-  ) async {
+  Future<Result<Failure, UserData>> signup(AuthUser authUser) async {
     try {
       bool isConnected = await networkInfo.isConnected;
       if (isConnected) {
-        final userData = await remoteDataSource.signup(email, password);
+        final userData = await remoteDataSource.signup(
+          authUser.email,
+          authUser.password,
+        );
         await localDataSource.cacheUserData(userData);
         return Success(userData);
       }

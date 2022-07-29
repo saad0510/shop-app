@@ -31,14 +31,14 @@ void main() {
     );
     mockAuthRepo = MockAuthRepository();
     usecase = SigninUser(mockAuthRepo);
-    registerFallbackValue("");
+    registerFallbackValue(authUser);
   });
 
   test(
     'should signin the user and return user data from database',
     () async {
       // arrange
-      when(() => mockAuthRepo.signin(any(), any()))
+      when(() => mockAuthRepo.signin(any()))
           .thenAnswer((_) async => Success(expectedUserData));
 
       // act
@@ -47,10 +47,7 @@ void main() {
       // assert
       expect(result, Success(expectedUserData));
       verify(
-        () => mockAuthRepo.signin(
-          authUser.email,
-          authUser.password,
-        ),
+        () => mockAuthRepo.signin(authUser),
       ).called(1);
       verifyNoMoreInteractions(mockAuthRepo);
     },

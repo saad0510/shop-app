@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/screen_fit_box.dart';
 import '../widgets.dart';
+import '../widgets/screen_fit_box.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
   const CompleteProfileScreen({Key? key}) : super(key: key);

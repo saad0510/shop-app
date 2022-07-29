@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/route_manager.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 
-import '../../../../core/extensions/context.dart';
 import '../../../../app/constants/durations.dart';
 import '../../../../app/router/routes.dart';
+import '../../../../core/extensions/context.dart';
+import '../controllers.dart';
 import '../controllers/onboarding_controller.dart';
 import '../widgets.dart';
-import '../controllers.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key}) : super(key: key);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
-import '../widgets/screen_fit_box.dart';
 import '../../../../app/router/routes.dart';
 import '../widgets.dart';
+import '../widgets/screen_fit_box.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({Key? key}) : super(key: key);
