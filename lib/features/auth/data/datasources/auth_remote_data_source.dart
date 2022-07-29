@@ -1,4 +1,4 @@
-import '../../../../core/entities/user_data.dart';
+import '../../../../shared/user/domain/entities/user_data.dart';
 import '../../domain/entities/auth_user.dart';
 
 abstract class AuthRemoteDataSource {

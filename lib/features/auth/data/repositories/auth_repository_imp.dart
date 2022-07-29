@@ -1,6 +1,6 @@
 import 'package:multiple_result/multiple_result.dart';
 
-import '../../../../core/entities/user_data.dart';
+import '../../../../shared/user/domain/entities/user_data.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/platform/network_info.dart';

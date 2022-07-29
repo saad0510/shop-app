@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:shopping_app/core/entities/user_data.dart';
+import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
 import 'package:shopping_app/core/errors/exception.dart';
 import 'package:shopping_app/core/errors/failure.dart';
 import 'package:shopping_app/core/platform/network_info.dart';
