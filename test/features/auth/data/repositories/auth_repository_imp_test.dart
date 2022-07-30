@@ -4,7 +4,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping_app/shared/user/data/models/user_data_model.dart';
 import 'package:shopping_app/core/errors/exception.dart';
 import 'package:shopping_app/core/errors/failure.dart';
-import 'package:shopping_app/core/platform/network_info.dart';
+import 'package:shopping_app/core/network/network_info.dart';
 import 'package:shopping_app/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:shopping_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:shopping_app/features/auth/data/repositories/auth_repository_imp.dart';

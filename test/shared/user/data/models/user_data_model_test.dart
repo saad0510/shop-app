@@ -9,6 +9,7 @@ import '../../../../fixtures/fixture_reader.dart';
 void main() {
   late UserDataModel userDataModel;
   late Map<String, dynamic> userMap;
+  const fixture_name = "user_data_model.json";
 
   setUp(() {
     userDataModel = const UserDataModel(
@@ -42,7 +43,7 @@ void main() {
     'should correctly transform from map to UserDataModel',
     () async {
       // arrange
-      String json = readFixture("user_data_model.json");
+      String json = readFixture(fixture_name);
       Map<String, dynamic> map = jsonDecode(json);
       // act
       UserData user = UserDataModel.fromMap(map);

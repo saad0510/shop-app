@@ -68,11 +68,9 @@ void main() {
   });
 
   group("saveUser:", () {
-    late String uid;
     late UserDataModel userDataModel;
 
     setUp(() {
-      uid = "1";
       userDataModel = const UserDataModel(
         uid: "1",
         email: "email",
