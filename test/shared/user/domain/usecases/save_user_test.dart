@@ -32,7 +32,7 @@ void main() {
     () async {
       // arrange
       when(() => repo.saveUser(any()))
-          .thenAnswer((_) async => const Success(true));
+          .thenAnswer((_) async => const Success(NoReturn()));
       // act
       final result = await usecase(userData);
       // assert

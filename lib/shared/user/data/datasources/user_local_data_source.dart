@@ -1,6 +1,6 @@
 import '../../../../shared/user/data/models/user_data_model.dart';
 
-abstract class AuthLocalDataSource {
+abstract class UserLocalDataSource {
   /// stores the given UserData in local cache
   ///
   /// throws a [CacheException] for all error codes
