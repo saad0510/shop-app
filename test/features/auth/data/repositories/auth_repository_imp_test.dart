@@ -13,38 +13,34 @@ class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
 void main() {
   late MockAuthRemoteDataSource mockAuthRemoteDataSrc;
   late AuthRepositoryImp repo;
+  late AuthUser authUser;
+  late UserDataModel userData;
 
   setUp(() {
     mockAuthRemoteDataSrc = MockAuthRemoteDataSource();
     repo = AuthRepositoryImp(
       remoteDataSource: mockAuthRemoteDataSrc,
     );
+    authUser = const AuthUser(
+      uid: "no-uid",
+      email: "acc1@fin.com",
+      password: "test123",
+    );
+    userData = const UserDataModel(
+      uid: "1",
+      email: "acc1@fin.com",
+      password: "test123",
+      firstName: "Saad",
+      lastName: "Bin Khalid",
+      phone: "+923133094567",
+      address: "Landhi, Karachi, Pakistan",
+    );
+
+    registerFallbackValue(authUser);
+    registerFallbackValue(userData);
   });
 
   group("signin:", () {
-    late AuthUser authUser;
-    late UserDataModel userData;
-
-    setUp(() {
-      authUser = const AuthUser(
-        uid: "no-uid",
-        email: "acc1@fin.com",
-        password: "test123",
-      );
-      userData = const UserDataModel(
-        uid: "1",
-        email: "acc1@fin.com",
-        password: "test123",
-        firstName: "Saad",
-        lastName: "Bin Khalid",
-        phone: "+923133094567",
-        address: "Landhi, Karachi, Pakistan",
-      );
-
-      registerFallbackValue(authUser);
-      registerFallbackValue(userData);
-    });
-
     test(
       'should sigin and return remote UserData on success',
       () async {
@@ -82,29 +78,6 @@ void main() {
   });
 
   group("signup:", () {
-    late AuthUser authUser;
-    late UserDataModel userData;
-
-    setUp(() {
-      authUser = const AuthUser(
-        uid: "no-uid",
-        email: "acc1@fin.com",
-        password: "test123",
-      );
-      userData = const UserDataModel(
-        uid: "1",
-        email: "acc1@fin.com",
-        password: "test123",
-        firstName: "Saad",
-        lastName: "Bin Khalid",
-        phone: "+923133094567",
-        address: "Landhi, Karachi, Pakistan",
-      );
-
-      registerFallbackValue(authUser);
-      registerFallbackValue(userData);
-    });
-
     test(
       'should signup and return remote UserData on success',
       () async {

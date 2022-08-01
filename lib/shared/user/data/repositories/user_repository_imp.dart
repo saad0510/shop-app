@@ -36,6 +36,8 @@ class UserRepositoryImp extends UserRepository {
       return const Error(CacheFailure());
     } on DatabaseException {
       return const Error(DatabaseFailure());
+    } on CacheException {
+      return const Error(CacheFailure());
     }
   }
 
@@ -52,6 +54,8 @@ class UserRepositoryImp extends UserRepository {
       return const Error(DatabaseFailure());
     } on DatabaseException {
       return const Error(DatabaseFailure());
+    } on CacheException {
+      return const Error(CacheFailure());
     }
   }
 }
