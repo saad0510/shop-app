@@ -1,13 +1,15 @@
-import '../../../../shared/user/data/models/user_data_model.dart';
-
 abstract class AuthRemoteDataSource {
   /// signs in an existing user with given credentials
   ///
+  /// returns uid of user
+  ///
   /// throws a [AuthException] for all error codes
-  Future<UserDataModel> signin(String email, String password);
+  Future<String> signin(String email, String password);
 
   /// creates a new user with given credentials, if any
   ///
+  /// returns uid of user
+  ///
   /// throws a [AuthException] for all error codes
-  Future<UserDataModel> signup(String email, String password);
+  Future<String> signup(String email, String password);
 }

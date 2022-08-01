@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
-import 'package:shopping_app/features/auth/domain/entities/auth_user.dart';
 import 'package:shopping_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:shopping_app/features/auth/domain/usecases/signup_user.dart';
 
@@ -11,16 +10,11 @@ class MockAuthRepository extends Mock implements AuthRepository {}
 void main() {
   late MockAuthRepository mockAuthRepo;
   late SignupUser usecase;
-  late AuthUser authUser;
-  late UserData expectedUserData;
+
+  late UserData userData;
 
   setUp(() {
-    authUser = const AuthUser(
-      uid: "no-uid",
-      email: "acc1@fin.com",
-      password: "test123",
-    );
-    expectedUserData = const UserData(
+    userData = const UserData(
       uid: "1",
       email: "acc1@fin.com",
       password: "test123",
@@ -31,7 +25,7 @@ void main() {
     );
     mockAuthRepo = MockAuthRepository();
     usecase = SignupUser(mockAuthRepo);
-    registerFallbackValue(authUser);
+    registerFallbackValue(userData);
   });
 
   test(
@@ -39,16 +33,13 @@ void main() {
     () async {
       // arrange
       when(() => mockAuthRepo.signup(any()))
-          .thenAnswer((_) async => Success(expectedUserData));
-
+          .thenAnswer((_) async => Success(userData));
       // act
-      final result = await usecase(authUser);
-
+      final userDataWithoutUid = userData.copyWith(uid: "");
+      final result = await usecase(userDataWithoutUid);
       // assert
-      expect(result, Success(expectedUserData));
-      verify(
-        () => mockAuthRepo.signup(authUser),
-      ).called(1);
+      expect(result, Success(userData));
+      verify(() => mockAuthRepo.signup(userDataWithoutUid)).called(1);
       verifyNoMoreInteractions(mockAuthRepo);
     },
   );

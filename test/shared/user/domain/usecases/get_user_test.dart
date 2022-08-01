@@ -39,12 +39,8 @@ void main() {
       final result = await usecase(uid);
       // assert
       expect(result, Success(userData));
-      verifyCalledOnce(() => repo.getUser(uid));
+      verify(() => repo.getUser(uid)).called(1);
       verifyNoMoreInteractions(repo);
     },
   );
-}
-
-void verifyCalledOnce(void Function() body) {
-  verify(body).called(1);
 }

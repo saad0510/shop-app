@@ -16,16 +16,16 @@ class FontWeights {
 class FontSizes {
   FontSizes._();
 
-  static final headline1 = (30.0.sp);
-  static final headline2 = (25.0.sp);
-  static final headline3 = (22.0.sp);
-  static final headline4 = (19.0.sp);
-  static final headline5 = (17.0.sp);
-  static final headline6 = (17.0.sp);
-  static final body1 = (16.0.sp);
-  static final body2 = (15.0.sp);
-  static final subtitle1 = (14.0.sp);
-  static final subtitle2 = (13.0.sp);
+  static final headline1 = 30.0.sp;
+  static final headline2 = 25.0.sp;
+  static final headline3 = 22.0.sp;
+  static final headline4 = 19.0.sp;
+  static final headline5 = 17.0.sp;
+  static final headline6 = 17.0.sp;
+  static final body1 = 16.0.sp;
+  static final body2 = 15.0.sp;
+  static final subtitle1 = 14.0.sp;
+  static final subtitle2 = 13.0.sp;
 }
 
 class Fonts {

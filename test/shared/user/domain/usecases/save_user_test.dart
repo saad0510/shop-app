@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:shopping_app/core/usecases/usecase.dart';
 import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
 import 'package:shopping_app/shared/user/domain/repositories/user_repository.dart';
 import 'package:shopping_app/shared/user/domain/usecases/save_user.dart';
@@ -32,17 +33,13 @@ void main() {
     () async {
       // arrange
       when(() => repo.saveUser(any()))
-          .thenAnswer((_) async => const Success(NoReturn()));
+          .thenAnswer((_) async => const Success(Void()));
       // act
       final result = await usecase(userData);
       // assert
-      expect(result, const Success(true));
-      verifyCalledOnce(() => repo.saveUser(userData));
+      expect(result, const Success(Void()));
+      verify(() => repo.saveUser(userData)).called(1);
       verifyNoMoreInteractions(repo);
     },
   );
-}
-
-void verifyCalledOnce(void Function() body) {
-  verify(body).called(1);
 }

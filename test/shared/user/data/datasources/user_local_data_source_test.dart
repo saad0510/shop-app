@@ -70,7 +70,7 @@ void main() {
         when(() => mockSharedPrefs.setString(any(), any()))
             .thenAnswer((_) async => true);
         // act
-        datasource.cacheUserData(userDataModel);
+        await datasource.cacheUserData(userDataModel);
         // assert
         final jsonStr = jsonEncode(userDataModel.toMap());
         verify(() => mockSharedPrefs.setString(cache_key, jsonStr)).called(1);

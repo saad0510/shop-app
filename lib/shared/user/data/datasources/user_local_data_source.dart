@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopping_app/core/errors/exception.dart';
 
+import '../../../../core/errors/exception.dart';
 import '../../../../shared/user/data/models/user_data_model.dart';
 
 abstract class UserLocalDataSource {

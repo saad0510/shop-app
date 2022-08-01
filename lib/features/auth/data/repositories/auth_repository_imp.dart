@@ -2,41 +2,45 @@ import 'package:multiple_result/multiple_result.dart';
 
 import '../../../../core/errors/exception.dart';
 import '../../../../core/errors/failure.dart';
-import '../../../../shared/user/data/models/user_data_model.dart';
 import '../../../../shared/user/domain/entities/user_data.dart';
-import '../../domain/entities/auth_user.dart';
+import '../../../../shared/user/domain/usecases/get_user.dart';
+import '../../../../shared/user/domain/usecases/save_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_data_source.dart';
 
-// TODO: make dependencies private
-
 class AuthRepositoryImp implements AuthRepository {
-  final AuthRemoteDataSource remoteDataSource;
+  final AuthRemoteDataSource _remoteSrc;
+  final GetUser _getUser;
+  final SaveUser _saveUser;
 
   AuthRepositoryImp({
-    required this.remoteDataSource,
-  });
+    required AuthRemoteDataSource remoteDataSource,
+    required GetUser getUser,
+    required SaveUser saveUser,
+  })  : _remoteSrc = remoteDataSource,
+        _getUser = getUser,
+        _saveUser = saveUser;
 
   @override
-  Future<Result<Failure, UserData>> signin(AuthUser authUser) async {
-    return _signinOrSignupSelector(
-      () => remoteDataSource.signin(authUser.email, authUser.password),
-    );
-  }
-
-  @override
-  Future<Result<Failure, UserData>> signup(AuthUser authUser) async {
-    return _signinOrSignupSelector(
-      () => remoteDataSource.signup(authUser.email, authUser.password),
-    );
-  }
-
-  Future<Result<Failure, UserData>> _signinOrSignupSelector(
-    Future<UserDataModel> Function() callback,
-  ) async {
+  Future<AuthResult> signin(String email, String password) async {
     try {
-      final userData = await callback();
-      return Success(userData);
+      final uid = await _remoteSrc.signin(email, password);
+      return _getUser(uid);
+    } on AuthException {
+      return const Error(AuthFailure());
+    }
+  }
+
+  @override
+  Future<AuthResult> signup(UserData userData) async {
+    try {
+      final uid = await _remoteSrc.signup(userData.email, userData.password);
+      final userWithUid = userData.copyWith(uid: uid);
+      final result = await _saveUser(userWithUid);
+      if (result.isSuccess()) {
+        return Success(userWithUid);
+      }
+      return Error(result.getError()!);
     } on AuthException {
       return const Error(AuthFailure());
     }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shopping_app/core/errors/exception.dart';
 
+import '../../../../core/errors/exception.dart';
 import '../models/user_data_model.dart';
 
 abstract class UserRemoteDataSource {

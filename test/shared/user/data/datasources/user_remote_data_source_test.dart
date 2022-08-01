@@ -28,6 +28,15 @@ void main() {
   late UserDataModel userDataModel;
   late Map<String, dynamic> userMap;
 
+  void fallbacks() {
+    registerFallbackValue(userDataModel);
+    when(() => mockFirestore.collection(any())).thenReturn(mockCollectionRef);
+    when(() => mockCollectionRef.doc(any())).thenReturn(mockDocRef);
+    when(() => mockCollectionRef.add(any()))
+        .thenAnswer((_) async => mockDocRef);
+    when(() => mockDocRef.get()).thenAnswer((_) async => mockDocSnapshot);
+  }
+
   setUp(() {
     mockCollectionRef = MockCollectionRef();
     mockDocRef = MockDocumentRef();
@@ -54,19 +63,12 @@ void main() {
       "phone": "+923133094567",
       "address": "Street 31, House 2, Area 2B, Landhi 3, Karachi",
     };
-
-    when(() => mockFirestore.collection(any())).thenReturn(mockCollectionRef);
-    when(() => mockCollectionRef.doc(any())).thenReturn(mockDocRef);
-    when(() => mockCollectionRef.add(any()))
-        .thenAnswer((_) async => mockDocRef);
-    when(() => mockDocRef.get()).thenAnswer((_) async => mockDocSnapshot);
-
-    registerFallbackValue(userDataModel);
+    fallbacks();
   });
 
   group("getUser:", () {
     test(
-      'should fetch and return user given user from database on success',
+      'should return user given user from database on success',
       () async {
         // arrange
         when(() => mockDocSnapshot.data()).thenReturn(userMap);

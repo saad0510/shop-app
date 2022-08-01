@@ -40,4 +40,24 @@ class UserData {
         phone.hashCode ^
         address.hashCode;
   }
+
+  UserData copyWith({
+    String? uid,
+    String? email,
+    String? password,
+    String? firstName,
+    String? lastName,
+    String? phone,
+    String? address,
+  }) {
+    return UserData(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+    );
+  }
 }

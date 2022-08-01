@@ -14,6 +14,6 @@ class GetUser extends UseCase<UserData, String> {
 
   @override
   Future<Result<Failure, UserData>> call(String uid) async {
-    return await _repo.getUser(uid);
+    return _repo.getUser(uid);
   }
 }
