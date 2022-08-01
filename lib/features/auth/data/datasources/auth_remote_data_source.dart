@@ -1,3 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_app/core/errors/exception.dart';
+
 abstract class AuthRemoteDataSource {
   /// signs in an existing user with given credentials
   ///
@@ -12,4 +15,42 @@ abstract class AuthRemoteDataSource {
   ///
   /// throws a [AuthException] for all error codes
   Future<String> signup(String email, String password);
+}
+
+class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
+  final FirebaseAuth _firebaseAuth;
+
+  AuthRemoteDataSourceImp({required FirebaseAuth firebaseAuth})
+      : _firebaseAuth = firebaseAuth;
+
+  @override
+  Future<String> signin(String email, String password) async {
+    return _signinOrSignupSelector(
+      () => _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ),
+    );
+  }
+
+  @override
+  Future<String> signup(String email, String password) {
+    return _signinOrSignupSelector(
+      () => _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ),
+    );
+  }
+
+  Future<String> _signinOrSignupSelector(
+    Future<UserCredential> Function() body,
+  ) async {
+    final userCredits = await body();
+    final user = userCredits.user;
+    if (user != null) {
+      return user.uid;
+    }
+    throw const AuthException("signin failed. user was found null");
+  }
 }
