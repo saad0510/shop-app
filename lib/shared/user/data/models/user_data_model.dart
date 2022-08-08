@@ -2,22 +2,14 @@ import '../../domain/entities/user_data.dart';
 
 class UserDataModel extends UserData {
   const UserDataModel({
-    required String uid,
-    required String email,
-    required String password,
-    required String firstName,
-    required String lastName,
-    required String phone,
-    required String address,
-  }) : super(
-          uid: uid,
-          email: email,
-          password: password,
-          firstName: firstName,
-          lastName: lastName,
-          phone: phone,
-          address: address,
-        );
+    required super.uid,
+    required super.email,
+    required super.password,
+    required super.firstName,
+    required super.lastName,
+    required super.phone,
+    required super.address,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

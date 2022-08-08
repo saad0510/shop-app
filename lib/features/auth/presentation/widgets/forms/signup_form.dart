@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../app/assets/svg_icons.dart';
 import '../../../../../app/router/routes.dart';
-import '../../controllers.dart';
+import '../../../../../core/extensions/context.dart';
+import '../../../../../core/utils/validations.dart';
 import '../../widgets.dart';
 
 class SignupForm extends StatefulWidget {
@@ -16,7 +17,6 @@ class SignupForm extends StatefulWidget {
 class _SignupFormState extends State<SignupForm> {
   String? confirmPass;
   final formKey = GlobalKey<FormState>();
-  final errors = Get.find<SignupErrorController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,32 +32,26 @@ class _SignupFormState extends State<SignupForm> {
             iconPath: SvgIcons.email,
             inputType: TextInputType.emailAddress,
             onSaved: (_) {},
-            validator: errors.validateEmail,
+            validator: Validator.validateEmail,
           ),
+          SizedBox(height: 20.h),
           PasswordFormField(
             hint: "Enter you password",
             validator: (x) {
               confirmPass = x;
-              return errors.validatePass(x);
+              return Validator.validatePass(x);
             },
           ),
+          SizedBox(height: 20.h),
           PasswordFormField(
             label: "Confirm Password",
             hint: "Re-enter you password",
             onSaved: (_) {},
-            validator: (x) {
-              return errors.validateConfirmPass(x, confirmPass);
-            },
+            validator: (x) => Validator.validateConfirmPass(x, confirmPass),
           ),
-          Obx(
-            () => ErrorBox(errors: [
-              errors.passErr,
-              errors.emailErr,
-              errors.confirmPassErr,
-            ]),
-          ),
+          SizedBox(height: 20.h),
           ElevatedButton(
-            onPressed: register,
+            onPressed: () => register(context),
             child: const Text("Register"),
           ),
         ],
@@ -65,10 +59,10 @@ class _SignupFormState extends State<SignupForm> {
     );
   }
 
-  void register() {
+  void register(BuildContext context) {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      Get.offAllNamed(Routes.completeProfile);
+      context.goReplaceAllNamed(Routes.completeProfile);
     }
   }
 }

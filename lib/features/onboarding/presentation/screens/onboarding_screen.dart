@@ -1,53 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
+import '../../domain/entities/onboarding_data.dart';
 
 import '../../../../app/constants/durations.dart';
 import '../../../../app/router/routes.dart';
 import '../../../../core/extensions/context.dart';
-import '../controllers.dart';
-import '../controllers/onboarding_controller.dart';
 import '../widgets.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final pages = dataOfOnboardinPages;
+  int activeIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.find<OnboardingController>();
     final pageController = PageController();
     final isLandscape = context.orientation == Orientation.landscape;
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: PageView.builder(
-                controller: pageController,
-                itemCount: controller.count,
-                onPageChanged: (value) => controller.moveTo(value),
-                itemBuilder: (_, i) {
-                  return OnBoardingContent(page: controller.pages[i]);
-                },
+      body: Center(
+        child: FractionallySizedBox(
+          widthFactor: isLandscape ? 0.6 : 0.9,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: PageView.builder(
+                  controller: pageController,
+                  itemCount: pages.length,
+                  onPageChanged: (index) => setState(() => activeIndex = index),
+                  itemBuilder: (_, i) => OnBoardingContent(page: pages[i]),
+                ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: FractionallySizedBox(
-                widthFactor: isLandscape ? 0.5 : 0.8,
+              Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 3.h),
-                    const PageDotBar(),
+                    PageDotBar(
+                      activeIndex: activeIndex,
+                      count: pages.length,
+                    ),
+                    const Spacer(),
                     ElevatedButton(
                       onPressed: () {
-                        controller.isLastIndex
-                            ? Get.offAndToNamed(Routes.signin)
+                        activeIndex == pages.length - 1
+                            ? context.goReplaceNamed(Routes.signin)
                             : pageController.nextPage(
                                 duration: Durations.animation,
                                 curve: Curves.easeInOutCirc,
@@ -55,12 +58,12 @@ class OnboardingScreen extends StatelessWidget {
                       },
                       child: const Text("Continue"),
                     ),
-                    SizedBox(height: 3.h),
+                    SizedBox(height: 20.h),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

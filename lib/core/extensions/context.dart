@@ -22,4 +22,19 @@ extension ContextUtils on BuildContext {
   TextTheme get textTheme {
     return Theme.of(this).textTheme;
   }
+
+  void goNamed(String name) async {
+    await Navigator.of(this).pushNamed(name);
+  }
+
+  void goReplaceNamed(String name) async {
+    await Navigator.of(this).pushReplacementNamed(name);
+  }
+
+  void goReplaceAllNamed(String name) async {
+    while (Navigator.of(this).canPop()) {
+      Navigator.of(this).pop();
+    }
+    await Navigator.of(this).pushReplacementNamed(name);
+  }
 }

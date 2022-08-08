@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 import '../../../../app/router/routes.dart';
+import '../../../../core/extensions/context.dart';
 import '../widgets.dart';
-import '../widgets/screen_fit_box.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({Key? key}) : super(key: key);
@@ -16,8 +15,7 @@ class OtpScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: appBar,
-      body: ScreenFitBox(
-        appBarHeight: appBar.preferredSize.height,
+      body: ScreenFit(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           const Padding(
@@ -27,7 +25,7 @@ class OtpScreen extends StatelessWidget {
           // TODO: implement form states and submission
           OtpInputField(count: 4),
           ElevatedButton(
-            onPressed: gotoHome,
+            onPressed: () => gotoHome(context),
             child: const Text("Continue"),
           ),
           Padding(
@@ -42,7 +40,7 @@ class OtpScreen extends StatelessWidget {
     );
   }
 
-  void gotoHome() {
-    Get.offAndToNamed(Routes.home);
+  void gotoHome(BuildContext context) {
+    context.goReplaceNamed(Routes.home);
   }
 }

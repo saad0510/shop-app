@@ -7,25 +7,16 @@ import 'app_fonts.dart';
 class AppTheme {
   AppTheme._();
 
-  static final lightTheme = ThemeData(
-    // colors
-    colorScheme: _colorScheme.copyWith(brightness: Brightness.light),
-    scaffoldBackgroundColor: AppColors.background,
-    // widgets
-    appBarTheme: _appBarTheme,
-    iconTheme: _iconTheme,
-    elevatedButtonTheme: _elevatedButtonTheme,
-    inputDecorationTheme: _inputDecorationTheme,
-    checkboxTheme: _checkboxTheme,
-    // fonts
-    fontFamily: Fonts.family,
-    textTheme: _textTheme,
-    visualDensity: VisualDensity.adaptivePlatformDensity,
+  static final lightTheme = _appTheme.copyWith(
+    colorScheme: _colorScheme,
   );
 
-  static final darkTheme = ThemeData(
-    // colors
+  static final darkTheme = _appTheme.copyWith(
     colorScheme: _colorScheme.copyWith(brightness: Brightness.dark),
+  );
+
+  static final _appTheme = ThemeData(
+    // colors
     scaffoldBackgroundColor: AppColors.background,
     // widgets
     appBarTheme: _appBarTheme,
@@ -108,8 +99,7 @@ class AppTheme {
     errorStyle: _textTheme.subtitle1?.copyWith(color: AppColors.error),
     floatingLabelAlignment: FloatingLabelAlignment.start,
     floatingLabelBehavior: FloatingLabelBehavior.always,
-    constraints: BoxConstraints(minHeight: 80.h),
-    contentPadding: const EdgeInsets.fromLTRB(30, 15, 0, 15),
+    contentPadding: const EdgeInsets.fromLTRB(20, 15, 0, 15),
   );
 
   static const otpInputTheme = InputDecorationTheme(

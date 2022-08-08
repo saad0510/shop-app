@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../../app/router/routes.dart';
+import '../../../../core/extensions/context.dart';
 import 'text_action.dart';
 
 class NoAccountAction extends StatelessWidget {
@@ -18,7 +18,7 @@ class NoAccountAction extends StatelessWidget {
         ),
         TextAction(
           "Sign Up",
-          onPressed: gotoSignup,
+          onPressed: () => gotoSignup(context),
           underline: false,
           style: Theme.of(context).textTheme.subtitle1?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
@@ -28,7 +28,7 @@ class NoAccountAction extends StatelessWidget {
     );
   }
 
-  void gotoSignup() {
-    Get.toNamed(Routes.signup);
+  void gotoSignup(BuildContext context) {
+    context.goNamed(Routes.signup);
   }
 }

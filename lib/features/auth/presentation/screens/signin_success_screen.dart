@@ -1,51 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 import '../../../../app/assets/images.dart';
 import '../../../../app/router/routes.dart';
-import '../widgets/screen_fit_box.dart';
+import '../../../../core/extensions/context.dart';
 
 class SigninSuccessScreen extends StatelessWidget {
   const SigninSuccessScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: const Text("Login Success"),
-    );
     return Scaffold(
-      appBar: appBar,
-      body: ScreenFitBox(
-        widthFactor: 1,
-        appBarHeight: appBar.preferredSize.height,
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        children: [
-          Image.asset(
-            Images.success,
-            width: 500,
-            fit: BoxFit.fitWidth,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Text(
-              "Logic Success",
-              textAlign: TextAlign.center,
-              style: Get.textTheme.headline2,
+      appBar: AppBar(
+        title: const Text("Login Success"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Image.asset(
+                Images.success,
+                fit: BoxFit.fitHeight,
+              ),
             ),
-          ),
-          FractionallySizedBox(
-            widthFactor: 0.5,
-            child: ElevatedButton(
-              onPressed: gotoHome,
-              child: const Text("Back to home"),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Logic Success",
+                    textAlign: TextAlign.center,
+                    style: context.textTheme.headline2,
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.5,
+                    child: ElevatedButton(
+                      onPressed: () => gotoHome(context),
+                      child: const Text("Back to home"),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  void gotoHome() {
-    Get.offAndToNamed(Routes.home);
+  void gotoHome(BuildContext context) {
+    context.goReplaceNamed(Routes.home);
   }
 }

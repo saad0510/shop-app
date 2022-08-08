@@ -1,7 +1,7 @@
 // TODO: user regex for validations
 
-class FormValidator {
-  FormValidator._();
+class Validator {
+  Validator._();
 
   static String? validateName(String? value) {
     if (value == null || value.isEmpty) return "The name is required";
@@ -24,6 +24,10 @@ class FormValidator {
     if (value == null || value.isEmpty) return "The password is required";
     if (value.length < 6) return "Password should contain atleast 6 characters";
     return null;
+  }
+
+  static String? validateConfirmPass(String? value, String? original) {
+    return value == original ? null : "Passwords do not match";
   }
 }
 

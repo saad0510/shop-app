@@ -27,9 +27,10 @@ class BaseFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         labelText: label,
-        errorStyle: const TextStyle(fontSize: 0),
-        suffixIconConstraints:
-            const BoxConstraints.tightFor(width: 70, height: 20),
+        suffixIconConstraints: const BoxConstraints.tightFor(
+          width: 70,
+          height: 20,
+        ),
         suffixIcon: SvgPicture.asset(iconPath, fit: BoxFit.fitHeight),
       ),
       onSaved: onSaved,

@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/constants/durations.dart';
-import '../controllers.dart';
 
-class PageDotBar extends StatelessWidget {
-  const PageDotBar({Key? key}) : super(key: key);
+class PageDotBar extends ConsumerWidget {
+  const PageDotBar({
+    Key? key,
+    required this.count,
+    required this.activeIndex,
+  }) : super(key: key);
+
+  final int count;
+  final int activeIndex;
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<OnboardingController>();
-
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        controller.count,
-        (i) => Obx(
-          () => PageDot(active: controller.isActiveIndex(i)),
-        ),
+        count,
+        (i) => PageDot(active: i == activeIndex),
       ),
     );
   }

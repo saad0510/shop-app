@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shopping_app/core/errors/exception.dart';
+
+import '../../../../core/errors/exception.dart';
 
 abstract class AuthRemoteDataSource {
   /// signs in an existing user with given credentials

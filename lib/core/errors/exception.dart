@@ -23,3 +23,7 @@ class CacheException extends BaseException {
 class DatabaseException extends BaseException {
   const DatabaseException([String message = ""]) : super(message);
 }
+
+class RouteException extends BaseException {
+  const RouteException([String message = ""]) : super(message);
+}

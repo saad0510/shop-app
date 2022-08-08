@@ -29,7 +29,6 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       decoration: InputDecoration(
         hintText: widget.hint,
         labelText: widget.label,
-        errorStyle: const TextStyle(fontSize: 0),
         suffixIconConstraints: const BoxConstraints.tightFor(
           width: 70,
           height: 25,

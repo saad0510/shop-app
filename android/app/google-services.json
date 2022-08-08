@@ -29,6 +29,13 @@
             {
               "client_id": "590273361491-kmt85rommoos6pmo3nkkpmdklfp3n1cd.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "590273361491-t03qo9n9ljv4vch6laor4idtiocl6lgl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoppingApp"
+              }
             }
           ]
         }

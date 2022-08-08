@@ -23,12 +23,13 @@ class OnBoardingContent extends StatelessWidget {
         ),
         const Spacer(),
         Expanded(
-          flex: 5,
+          flex: 6,
           child: Image.asset(
             page.image,
             fit: BoxFit.contain,
           ),
         ),
+        const Spacer(),
       ],
     );
   }

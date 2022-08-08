@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../app/assets/svg_icons.dart';
-import '../../../../../app/router/routes.dart';
-import '../../../../../core/extensions/context.dart';
 import '../../../../../core/utils/validations.dart';
 import '../../widgets.dart';
 
-class SigninForm extends StatefulWidget {
-  const SigninForm({Key? key}) : super(key: key);
+class ForgotPassForm extends StatefulWidget {
+  const ForgotPassForm({Key? key}) : super(key: key);
 
   @override
-  State<SigninForm> createState() => _SigninFormState();
+  State<ForgotPassForm> createState() => _ForgotPassFormState();
 }
 
-class _SigninFormState extends State<SigninForm> {
+class _ForgotPassFormState extends State<ForgotPassForm> {
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -34,34 +32,18 @@ class _SigninFormState extends State<SigninForm> {
             validator: Validator.validateEmail,
           ),
           SizedBox(height: 20.h),
-          PasswordFormField(
-            hint: "Enter your password",
-            onSaved: (_) {},
-            validator: Validator.validatePass,
-          ),
-          SizedBox(height: 20.h),
           ElevatedButton(
-            onPressed: () => signin(context),
+            onPressed: () => forgotPass(context),
             child: const Text("Continue"),
           ),
-          SizedBox(height: 10.h),
-          TextAction(
-            "Forgot Password",
-            onPressed: () => gotoForgotPass(context),
-          )
         ],
       ),
     );
   }
 
-  void gotoForgotPass(BuildContext context) {
-    context.goNamed(Routes.forgotPass);
-  }
-
-  void signin(BuildContext context) {
+  void forgotPass(BuildContext context) {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      context.goReplaceNamed(Routes.signinSuccess);
     }
   }
 }

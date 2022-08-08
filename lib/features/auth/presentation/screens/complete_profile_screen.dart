@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
-import '../widgets/screen_fit_box.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
   const CompleteProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: const Text("Sign Up"),
-    );
     return Scaffold(
-      appBar: appBar,
-      body: ScreenFitBox(
-        appBarHeight: appBar.preferredSize.height,
+      appBar: AppBar(
+        title: const Text("Sign Up"),
+      ),
+      body: ScreenFit(
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 30),

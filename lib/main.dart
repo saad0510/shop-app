@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 
 import 'app/router/routes.dart';
 import 'app/themes/app_theme.dart';
-import 'dependencies.dart';
 
 void main() {
-  setupDependencies();
   runApp(
     ScreenUtilInit(
       designSize: const Size(376, 738),
@@ -23,15 +21,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      useInheritedMediaQuery: true,
-      debugShowCheckedModeBanner: false,
-      title: "Shopping App",
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
-      initialRoute: Routes.initial,
-      getPages: Routes.getPages,
+    return ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Shopping App",
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.light,
+        initialRoute: Routes.initial,
+        onGenerateRoute: Routes.onGenerateRoute,
+      ),
     );
   }
 }

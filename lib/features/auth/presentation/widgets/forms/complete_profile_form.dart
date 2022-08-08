@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../app/assets/svg_icons.dart';
 import '../../../../../app/router/routes.dart';
-import '../../controllers.dart';
+import '../../../../../core/extensions/context.dart';
+import '../../../../../core/utils/validations.dart';
 import '../../widgets.dart';
 
 class CompleteProfileForm extends StatefulWidget {
@@ -16,7 +17,6 @@ class CompleteProfileForm extends StatefulWidget {
 class _CompleteProfileFormState extends State<CompleteProfileForm> {
   String? confirmPass;
   final formKey = GlobalKey<FormState>();
-  final errors = Get.find<SignupErrorController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             iconPath: SvgIcons.user,
             inputType: TextInputType.name,
             onSaved: (_) {},
-            validator: errors.validateName,
+            validator: Validator.validateName,
           ),
+          SizedBox(height: 20.h),
           BaseFormField(
             label: "Last Name",
             hint: "Enter your last name",
@@ -41,6 +42,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             inputType: TextInputType.name,
             onSaved: (_) {},
           ),
+          SizedBox(height: 20.h),
           BaseFormField(
             label: "Phone Number",
             hint: "Enter your phone number",
@@ -48,8 +50,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             inputType: TextInputType.number,
             // TODO: input filters
             onSaved: (_) {},
-            validator: errors.validatePhone,
+            validator: Validator.validatePhone,
           ),
+          SizedBox(height: 20.h),
           BaseFormField(
             label: "Address",
             hint: "Enter your address",
@@ -57,11 +60,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             inputType: TextInputType.text,
             onSaved: (_) {},
           ),
-          Obx(
-            () => ErrorBox(errors: [errors.name, errors.phone]),
-          ),
+          SizedBox(height: 20.h),
           ElevatedButton(
-            onPressed: register,
+            onPressed: () => register(context),
             child: const Text("Register"),
           ),
         ],
@@ -69,10 +70,10 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  void register() {
+  void register(BuildContext context) {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      Get.offAndToNamed(Routes.otp);
+      context.goReplaceNamed(Routes.otp);
     }
   }
 }

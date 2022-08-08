@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
-import '../widgets/screen_fit_box.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: const Text("Sign Up"),
-    );
     return Scaffold(
-      appBar: appBar,
-      body: ScreenFitBox(
-        appBarHeight: appBar.preferredSize.height,
-        children: const [
+      appBar: AppBar(
+        title: const Text("Sign Up"),
+      ),
+      body: const ScreenFit(
+        children: [
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30),
             child: SignupTitles(),
