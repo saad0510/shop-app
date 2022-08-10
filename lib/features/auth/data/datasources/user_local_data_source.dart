@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/strings/error_strings.dart';
 import '../../../../core/errors/exception.dart';
-import '../../../../shared/user/data/models/user_data_model.dart';
+import '../models/user_data_model.dart';
 
 abstract class UserLocalDataSource {
   /// stores the given UserData in local cache

@@ -1,5 +1,5 @@
 import '../../../../core/usecases/usecase.dart';
-import '../../../../shared/user/domain/entities/user_data.dart';
+import '../entities/user_data.dart';
 import '../repositories/auth_repository.dart';
 
 class SignupUser implements UseCase<UserData, UserData> {

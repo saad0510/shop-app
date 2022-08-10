@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../domain/entities/onboarding_data.dart';
 
 import '../../../../app/constants/durations.dart';
 import '../../../../app/router/routes.dart';
 import '../../../../core/extensions/context.dart';
+import '../../domain/entities/onboarding_data.dart';
 import '../widgets.dart';
 
 class OnboardingScreen extends StatefulWidget {

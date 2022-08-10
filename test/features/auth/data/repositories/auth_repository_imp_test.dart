@@ -5,9 +5,9 @@ import 'package:shopping_app/core/errors/exception.dart';
 import 'package:shopping_app/core/errors/failure.dart';
 import 'package:shopping_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:shopping_app/features/auth/data/repositories/auth_repository_imp.dart';
-import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
-import 'package:shopping_app/shared/user/domain/usecases/get_user.dart';
-import 'package:shopping_app/shared/user/domain/usecases/save_user.dart';
+import 'package:shopping_app/features/auth/domain/entities/user_data.dart';
+import 'package:shopping_app/features/auth/domain/usecases/get_user.dart';
+import 'package:shopping_app/features/auth/domain/usecases/save_user.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
 

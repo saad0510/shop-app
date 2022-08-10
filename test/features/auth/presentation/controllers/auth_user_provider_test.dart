@@ -7,8 +7,8 @@ import 'package:shopping_app/features/auth/domain/usecases/signout_user.dart';
 import 'package:shopping_app/features/auth/domain/usecases/signup_user.dart';
 import 'package:shopping_app/features/auth/presentation/controllers/auth_user_provider.dart';
 import 'package:shopping_app/features/auth/presentation/controllers/auth_user_state.dart';
-import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
-import 'package:shopping_app/shared/user/domain/usecases/update_user.dart';
+import 'package:shopping_app/features/auth/domain/entities/user_data.dart';
+import 'package:shopping_app/features/auth/domain/usecases/update_user.dart';
 
 class MockSigninUser extends Mock implements SigninUser {}
 

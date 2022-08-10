@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../shared/user/domain/usecases/update_user.dart';
 import '../../../../injecetions.dart';
-import '../../../../shared/user/domain/entities/user_data.dart';
+import '../../domain/entities/user_data.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/signin_user.dart';
 import '../../domain/usecases/signout_user.dart';
 import '../../domain/usecases/signup_user.dart';
+import '../../domain/usecases/update_user.dart';
 import 'auth_user_state.dart';
 
 class AuthUserNotifier extends StateNotifier<AuthUserState> {
@@ -21,8 +21,6 @@ class AuthUserNotifier extends StateNotifier<AuthUserState> {
     required this.signoutUsecase,
     required this.updateUsecase,
   }) : super(AuthUserEmpty());
-
-  AuthUserState getState() => state;
 
   Future<void> signin(String email, String password) async {
     await _runEvent(

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shopping_app/shared/user/data/models/user_data_model.dart';
-import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
+import 'package:shopping_app/features/auth/data/models/user_data_model.dart';
+import 'package:shopping_app/features/auth/domain/entities/user_data.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 

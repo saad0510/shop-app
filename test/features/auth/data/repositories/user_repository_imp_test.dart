@@ -5,10 +5,10 @@ import 'package:shopping_app/app/strings/error_strings.dart';
 import 'package:shopping_app/core/errors/exception.dart';
 import 'package:shopping_app/core/errors/failure.dart';
 import 'package:shopping_app/core/network/network_info.dart';
-import 'package:shopping_app/shared/user/data/datasources/user_local_data_source.dart';
-import 'package:shopping_app/shared/user/data/datasources/user_remote_data_source.dart';
-import 'package:shopping_app/shared/user/data/models/user_data_model.dart';
-import 'package:shopping_app/shared/user/data/repositories/user_repository_imp.dart';
+import 'package:shopping_app/features/auth/data/datasources/user_local_data_source.dart';
+import 'package:shopping_app/features/auth/data/datasources/user_remote_data_source.dart';
+import 'package:shopping_app/features/auth/data/models/user_data_model.dart';
+import 'package:shopping_app/features/auth/data/repositories/user_repository_imp.dart';
 
 class MockUserRemoteDataSource extends Mock implements UserRemoteDataSource {}
 

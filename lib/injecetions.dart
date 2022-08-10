@@ -6,19 +6,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/network_info.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
+import 'features/auth/data/datasources/user_local_data_source.dart';
+import 'features/auth/data/datasources/user_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_imp.dart';
+import 'features/auth/data/repositories/user_repository_imp.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
+import 'features/auth/domain/repositories/user_repository.dart';
+import 'features/auth/domain/usecases/get_user.dart';
+import 'features/auth/domain/usecases/save_user.dart';
 import 'features/auth/domain/usecases/signin_user.dart';
 import 'features/auth/domain/usecases/signout_user.dart';
 import 'features/auth/domain/usecases/signup_user.dart';
+import 'features/auth/domain/usecases/update_user.dart';
 import 'features/auth/presentation/controllers.dart';
-import 'shared/user/data/datasources/user_local_data_source.dart';
-import 'shared/user/data/datasources/user_remote_data_source.dart';
-import 'shared/user/data/repositories/user_repository_imp.dart';
-import 'shared/user/domain/repositories/user_repository.dart';
-import 'shared/user/domain/usecases/get_user.dart';
-import 'shared/user/domain/usecases/save_user.dart';
-import 'shared/user/domain/usecases/update_user.dart';
 
 final locator = GetIt.instance;
 

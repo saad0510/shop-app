@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shopping_app/core/errors/exception.dart';
-import 'package:shopping_app/shared/user/data/datasources/user_remote_data_source.dart';
-import 'package:shopping_app/shared/user/data/models/user_data_model.dart';
+import 'package:shopping_app/features/auth/data/datasources/user_remote_data_source.dart';
+import 'package:shopping_app/features/auth/data/models/user_data_model.dart';
 
 class MockCollectionRef extends Mock
     implements CollectionReference<Map<String, dynamic>> {}

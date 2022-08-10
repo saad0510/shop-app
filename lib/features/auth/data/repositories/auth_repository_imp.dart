@@ -3,10 +3,10 @@ import 'package:multiple_result/multiple_result.dart';
 
 import '../../../../core/errors/exception.dart';
 import '../../../../core/errors/failure.dart';
-import '../../../../shared/user/domain/entities/user_data.dart';
-import '../../../../shared/user/domain/usecases/get_user.dart';
-import '../../../../shared/user/domain/usecases/save_user.dart';
+import '../../domain/entities/user_data.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../domain/usecases/get_user.dart';
+import '../../domain/usecases/save_user.dart';
 import '../datasources/auth_remote_data_source.dart';
 
 class AuthRepositoryImp implements AuthRepository {

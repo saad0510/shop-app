@@ -6,7 +6,7 @@ import '../../../../../app/assets/svg_icons.dart';
 import '../../../../../app/router/routes.dart';
 import '../../../../../core/extensions/context.dart';
 import '../../../../../core/utils/validations.dart';
-import '../../../../../shared/user/domain/entities/user_data.dart';
+import '../../../domain/entities/user_data.dart';
 import '../../controllers.dart';
 import '../../widgets.dart';
 
