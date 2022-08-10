@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:multiple_result/multiple_result.dart';
 
+import '../../../../shared/user/domain/usecases/update_user.dart';
 import '../../../../injecetions.dart';
 import '../../../../shared/user/domain/entities/user_data.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -9,45 +9,64 @@ import '../../domain/usecases/signout_user.dart';
 import '../../domain/usecases/signup_user.dart';
 import 'auth_user_state.dart';
 
-// TODO: make dependencies private
-
 class AuthUserNotifier extends StateNotifier<AuthUserState> {
-  final SigninUser signinUser;
-  final SignupUser signupUser;
-  final SignoutUser signoutUser;
+  final SigninUser signinUsecase;
+  final SignupUser signupUsecase;
+  final SignoutUser signoutUsecase;
+  final UpdateUser updateUsecase;
 
   AuthUserNotifier({
-    required this.signinUser,
-    required this.signupUser,
-    required this.signoutUser,
+    required this.signinUsecase,
+    required this.signupUsecase,
+    required this.signoutUsecase,
+    required this.updateUsecase,
   }) : super(AuthUserEmpty());
 
   AuthUserState getState() => state;
 
   Future<void> signin(String email, String password) async {
     await _runEvent(
-      () => signinUser(SigninParams(email, password)),
+      () => signinUsecase(SigninParams(email, password)),
     );
   }
 
-  Future<void> mockSignup(UserData userData) async {
-    await _runEvent(() async => Success(userData));
-  }
-
   Future<void> signup(UserData userData) async {
-    await _runEvent(() => signupUser(userData));
+    await _runEvent(() => signupUsecase(userData));
   }
 
   Future<void> signout() async {
     state = AuthUserLoading();
-    final result = await signoutUser();
+    final result = await signoutUsecase();
     result.when(
-      (error) {
-        state = AuthUserError(message: error.message);
-      },
-      (_) {
-        state = AuthUserEmpty();
-      },
+      (error) => state = AuthUserError(message: error.message),
+      (_) => state = AuthUserEmpty(),
+    );
+  }
+
+  Future<void> update({
+    String firstName = "",
+    String lastName = "",
+    String phone = "",
+    String address = "",
+  }) async {
+    if (state is! AuthUserLoaded) {
+      state = AuthUserError(
+        message: "Cannot update a user unless he/she is logged in",
+      );
+    }
+    final oldUser = (state as AuthUserLoaded).userData;
+    final newUser = oldUser.copyWith(
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      address: address,
+    );
+    state = AuthUserLoading();
+
+    final result = await updateUsecase(newUser);
+    result.when(
+      (error) => state = AuthUserError(message: error.message),
+      (_) => state = AuthUserLoaded(userData: newUser),
     );
   }
 

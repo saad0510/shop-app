@@ -8,6 +8,7 @@ import 'package:shopping_app/features/auth/domain/usecases/signup_user.dart';
 import 'package:shopping_app/features/auth/presentation/controllers/auth_user_provider.dart';
 import 'package:shopping_app/features/auth/presentation/controllers/auth_user_state.dart';
 import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
+import 'package:shopping_app/shared/user/domain/usecases/update_user.dart';
 
 class MockSigninUser extends Mock implements SigninUser {}
 
@@ -15,10 +16,13 @@ class MockSignupUser extends Mock implements SignupUser {}
 
 class MockSignoutUser extends Mock implements SignoutUser {}
 
+class MockUpdateUser extends Mock implements UpdateUser {}
+
 void main() {
   late MockSigninUser mockSigninUser;
   late MockSignupUser mockSignupUser;
   late MockSignoutUser mockSignoutUser;
+  late MockUpdateUser mockUpdateUser;
   late AuthUserNotifier provider;
 
   const user = UserData(
@@ -35,10 +39,12 @@ void main() {
     mockSigninUser = MockSigninUser();
     mockSignupUser = MockSignupUser();
     mockSignoutUser = MockSignoutUser();
+    mockUpdateUser = MockUpdateUser();
     provider = AuthUserNotifier(
-      signinUser: mockSigninUser,
-      signupUser: mockSignupUser,
-      signoutUser: mockSignoutUser,
+      signinUsecase: mockSigninUser,
+      signupUsecase: mockSignupUser,
+      signoutUsecase: mockSignoutUser,
+      updateUsecase: mockUpdateUser,
     );
     registerFallbackValue(const SigninParams("", ""));
     registerFallbackValue(user);

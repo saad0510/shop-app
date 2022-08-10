@@ -76,16 +76,8 @@ class _SignupFormState extends ConsumerState<SignupForm> {
   void register() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      ref.read(authUserProvider.notifier).mockSignup(
-            UserData(
-              uid: "",
-              email: email,
-              password: password,
-              firstName: "",
-              lastName: "",
-              phone: "",
-              address: "",
-            ),
+      ref.read(authUserProvider.notifier).signup(
+            UserData.only(email: email, password: password),
           );
     }
   }

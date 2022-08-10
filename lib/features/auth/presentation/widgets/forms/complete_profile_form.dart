@@ -89,14 +89,11 @@ class _CompleteProfileFormState extends ConsumerState<CompleteProfileForm> {
   void register() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      final state = ref.read(authUserProvider.notifier).getState();
-      ref.read(authUserProvider.notifier).signup(
-            (state as AuthUserLoaded).userData.copyWith(
-                  firstName: firstName,
-                  lastName: lastName,
-                  phone: phone,
-                  address: address,
-                ),
+      ref.read(authUserProvider.notifier).update(
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+            address: address,
           );
     }
   }

@@ -18,6 +18,7 @@ import 'shared/user/data/repositories/user_repository_imp.dart';
 import 'shared/user/domain/repositories/user_repository.dart';
 import 'shared/user/domain/usecases/get_user.dart';
 import 'shared/user/domain/usecases/save_user.dart';
+import 'shared/user/domain/usecases/update_user.dart';
 
 final locator = GetIt.instance;
 
@@ -26,18 +27,21 @@ Future<void> init() async {
   // - controllers
   locator.registerFactory(
     () => AuthUserNotifier(
-      signinUser: locator(),
-      signupUser: locator(),
-      signoutUser: locator(),
+      signinUsecase: locator(),
+      signupUsecase: locator(),
+      signoutUsecase: locator(),
+      updateUsecase: locator(),
     ),
   );
 
   // - usecases
   locator.registerLazySingleton(() => SigninUser(locator()));
   locator.registerLazySingleton(() => SignupUser(locator()));
+  locator.registerLazySingleton(() => SignoutUser(locator()));
+
   locator.registerLazySingleton(() => GetUser(locator()));
   locator.registerLazySingleton(() => SaveUser(locator()));
-  locator.registerLazySingleton(() => SignoutUser(locator()));
+  locator.registerLazySingleton(() => UpdateUser(locator()));
 
   // - repositories
   locator.registerLazySingleton<AuthRepository>(

@@ -19,6 +19,16 @@ class UserData extends Equatable {
     required this.address,
   });
 
+  const UserData.only({
+    this.uid = "",
+    this.email = "",
+    this.password = "",
+    this.firstName = "",
+    this.lastName = "",
+    this.phone = "",
+    this.address = "",
+  });
+
   @override
   List<Object?> get props =>
       [uid, email, password, firstName, lastName, phone, address];
