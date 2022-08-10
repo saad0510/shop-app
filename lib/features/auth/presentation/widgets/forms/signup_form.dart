@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../app/assets/svg_icons.dart';
 import '../../../../../app/router/routes.dart';
 import '../../../../../core/extensions/context.dart';
 import '../../../../../core/utils/validations.dart';
+import '../../../../../shared/user/domain/entities/user_data.dart';
+import '../../controllers.dart';
 import '../../widgets.dart';
 
-class SignupForm extends StatefulWidget {
+class SignupForm extends ConsumerStatefulWidget {
   const SignupForm({Key? key}) : super(key: key);
 
   @override
-  State<SignupForm> createState() => _SignupFormState();
+  ConsumerState<SignupForm> createState() => _SignupFormState();
 }
 
-class _SignupFormState extends State<SignupForm> {
+class _SignupFormState extends ConsumerState<SignupForm> {
   String? confirmPass;
+  late String email;
+  late String password;
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AuthUserState>(authUserProvider, (_, state) {
+      if (state is AuthUserLoaded) {
+        context.goReplaceAllNamed(Routes.completeProfile);
+      }
+      if (state is AuthUserError) {
+        context.snackbar(Text(state.message));
+      }
+    });
+
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -31,7 +45,7 @@ class _SignupFormState extends State<SignupForm> {
             hint: "Enter your email",
             iconPath: SvgIcons.email,
             inputType: TextInputType.emailAddress,
-            onSaved: (_) {},
+            onSaved: (val) => email = val!,
             validator: Validator.validateEmail,
           ),
           SizedBox(height: 20.h),
@@ -46,23 +60,33 @@ class _SignupFormState extends State<SignupForm> {
           PasswordFormField(
             label: "Confirm Password",
             hint: "Re-enter you password",
-            onSaved: (_) {},
+            onSaved: (val) => password = val!,
             validator: (x) => Validator.validateConfirmPass(x, confirmPass),
           ),
           SizedBox(height: 20.h),
-          ElevatedButton(
-            onPressed: () => register(context),
-            child: const Text("Register"),
+          AuthStateButton(
+            text: "Sign up",
+            onPressed: register,
           ),
         ],
       ),
     );
   }
 
-  void register(BuildContext context) {
+  void register() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      context.goReplaceAllNamed(Routes.completeProfile);
+      ref.read(authUserProvider.notifier).mockSignup(
+            UserData(
+              uid: "",
+              email: email,
+              password: password,
+              firstName: "",
+              lastName: "",
+              phone: "",
+              address: "",
+            ),
+          );
     }
   }
 }

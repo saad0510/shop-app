@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../app/assets/svg_icons.dart';
 import '../../../../../app/router/routes.dart';
 import '../../../../../core/extensions/context.dart';
 import '../../../../../core/utils/validations.dart';
+import '../../controllers.dart';
 import '../../widgets.dart';
 
-class SigninForm extends StatefulWidget {
+class SigninForm extends ConsumerStatefulWidget {
   const SigninForm({Key? key}) : super(key: key);
 
   @override
-  State<SigninForm> createState() => _SigninFormState();
+  ConsumerState<SigninForm> createState() => _SigninFormState();
 }
 
-class _SigninFormState extends State<SigninForm> {
+class _SigninFormState extends ConsumerState<SigninForm> {
   final formKey = GlobalKey<FormState>();
+  late String email;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AuthUserState>(authUserProvider, (_, state) {
+      if (state is AuthUserLoaded) {
+        context.goReplaceAllNamed(Routes.home);
+      }
+      if (state is AuthUserError) {
+        context.snackbar(Text(state.message));
+      }
+    });
+
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -30,19 +43,19 @@ class _SigninFormState extends State<SigninForm> {
             hint: "Enter your email",
             iconPath: SvgIcons.email,
             inputType: TextInputType.emailAddress,
-            onSaved: (_) {},
+            onSaved: (v) => email = v!,
             validator: Validator.validateEmail,
           ),
           SizedBox(height: 20.h),
           PasswordFormField(
             hint: "Enter your password",
-            onSaved: (_) {},
+            onSaved: (v) => password = v!,
             validator: Validator.validatePass,
           ),
           SizedBox(height: 20.h),
-          ElevatedButton(
-            onPressed: () => signin(context),
-            child: const Text("Continue"),
+          AuthStateButton(
+            text: "Sign in",
+            onPressed: signin,
           ),
           SizedBox(height: 10.h),
           TextAction(
@@ -58,10 +71,10 @@ class _SigninFormState extends State<SigninForm> {
     context.goNamed(Routes.forgotPass);
   }
 
-  void signin(BuildContext context) {
+  Future<void> signin() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      context.goReplaceNamed(Routes.signinSuccess);
+      await ref.read(authUserProvider.notifier).signin(email, password);
     }
   }
 }
