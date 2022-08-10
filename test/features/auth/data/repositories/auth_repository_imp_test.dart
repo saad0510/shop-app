@@ -148,4 +148,29 @@ void main() {
       },
     );
   });
+  group("signout:", () {
+    test(
+      'should signout user on success',
+      () async {
+        // arrange
+        when(() => mockRemoteSrc.signout()).thenAnswer((_) async => user.uid);
+        // act
+        final result = await repo.signout();
+        expect(result, const Success(success));
+        verify(() => mockRemoteSrc.signout()).called(1);
+        verifyNoMoreInteractions(mockRemoteSrc);
+      },
+    );
+    test(
+      'should return AuthFailure on failure',
+      () async {
+        // arrange
+        when(() => mockRemoteSrc.signout()).thenThrow(const AuthException());
+        // act
+        final result = await repo.signout();
+        // assert
+        expect(result, const Error(AuthFailure()));
+      },
+    );
+  });
 }

@@ -7,7 +7,7 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/user_data.dart';
 import '../repositories/user_repository.dart';
 
-class SaveUser extends UseCase<void, UserData> {
+class SaveUser extends UseCase<SuccessResult, UserData> {
   final UserRepository _repo;
 
   SaveUser(this._repo);

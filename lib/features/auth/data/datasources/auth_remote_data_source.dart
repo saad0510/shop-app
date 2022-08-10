@@ -16,6 +16,13 @@ abstract class AuthRemoteDataSource {
   ///
   /// throws a [AuthException] for all error codes
   Future<String> signup(String email, String password);
+
+  /// signs out current user
+  ///
+  /// returns the id of user which was signed in
+  ///
+  /// throws a [AuthException] for all error codes
+  Future<String> signout();
 }
 
 class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
@@ -26,7 +33,7 @@ class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
 
   @override
   Future<String> signin(String email, String password) async {
-    return _signinOrSignupSelector(
+    return _returnUid(
       () => _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -36,7 +43,7 @@ class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
 
   @override
   Future<String> signup(String email, String password) {
-    return _signinOrSignupSelector(
+    return _returnUid(
       () => _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -44,9 +51,12 @@ class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
     );
   }
 
-  Future<String> _signinOrSignupSelector(
-    Future<UserCredential> Function() body,
-  ) async {
+  @override
+  Future<String> signout() {
+    return _returnUid(() => _firebaseAuth.signOut());
+  }
+
+  Future<String> _returnUid(Function() body) async {
     await body();
     final user = _firebaseAuth.currentUser;
     if (user != null) {

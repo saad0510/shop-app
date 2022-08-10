@@ -9,6 +9,7 @@ import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_imp.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/domain/usecases/signin_user.dart';
+import 'features/auth/domain/usecases/signout_user.dart';
 import 'features/auth/domain/usecases/signup_user.dart';
 import 'features/auth/presentation/controllers.dart';
 import 'shared/user/data/datasources/user_local_data_source.dart';
@@ -17,7 +18,6 @@ import 'shared/user/data/repositories/user_repository_imp.dart';
 import 'shared/user/domain/repositories/user_repository.dart';
 import 'shared/user/domain/usecases/get_user.dart';
 import 'shared/user/domain/usecases/save_user.dart';
-import 'shared/user/domain/usecases/update_user.dart';
 
 final locator = GetIt.instance;
 
@@ -28,7 +28,7 @@ Future<void> init() async {
     () => AuthUserNotifier(
       signinUser: locator(),
       signupUser: locator(),
-      updateUser: locator(),
+      signoutUser: locator(),
     ),
   );
 
@@ -37,7 +37,7 @@ Future<void> init() async {
   locator.registerLazySingleton(() => SignupUser(locator()));
   locator.registerLazySingleton(() => GetUser(locator()));
   locator.registerLazySingleton(() => SaveUser(locator()));
-  locator.registerLazySingleton(() => UpdateUser(locator()));
+  locator.registerLazySingleton(() => SignoutUser(locator()));
 
   // - repositories
   locator.registerLazySingleton<AuthRepository>(

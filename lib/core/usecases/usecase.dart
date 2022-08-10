@@ -5,3 +5,7 @@ import '../errors/failure.dart';
 abstract class UseCase<Type, Params> {
   Future<Result<Failure, Type>> call(Params params);
 }
+
+abstract class UseCaseNoParam<Type> {
+  Future<Result<Failure, Type>> call();
+}

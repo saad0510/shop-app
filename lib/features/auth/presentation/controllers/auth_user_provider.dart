@@ -3,9 +3,9 @@ import 'package:multiple_result/multiple_result.dart';
 
 import '../../../../injecetions.dart';
 import '../../../../shared/user/domain/entities/user_data.dart';
-import '../../../../shared/user/domain/usecases/update_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/signin_user.dart';
+import '../../domain/usecases/signout_user.dart';
 import '../../domain/usecases/signup_user.dart';
 import 'auth_user_state.dart';
 
@@ -14,12 +14,12 @@ import 'auth_user_state.dart';
 class AuthUserNotifier extends StateNotifier<AuthUserState> {
   final SigninUser signinUser;
   final SignupUser signupUser;
-  final UpdateUser updateUser;
+  final SignoutUser signoutUser;
 
   AuthUserNotifier({
     required this.signinUser,
     required this.signupUser,
-    required this.updateUser,
+    required this.signoutUser,
   }) : super(AuthUserEmpty());
 
   AuthUserState getState() => state;
@@ -36,6 +36,19 @@ class AuthUserNotifier extends StateNotifier<AuthUserState> {
 
   Future<void> signup(UserData userData) async {
     await _runEvent(() => signupUser(userData));
+  }
+
+  Future<void> signout() async {
+    state = AuthUserLoading();
+    final result = await signoutUser();
+    result.when(
+      (error) {
+        state = AuthUserError(message: error.message);
+      },
+      (_) {
+        state = AuthUserEmpty();
+      },
+    );
   }
 
   Future<void> _runEvent(Future<AuthResult> Function() body) async {

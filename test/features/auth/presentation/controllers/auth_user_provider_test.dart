@@ -3,22 +3,22 @@ import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping_app/core/errors/failure.dart';
 import 'package:shopping_app/features/auth/domain/usecases/signin_user.dart';
+import 'package:shopping_app/features/auth/domain/usecases/signout_user.dart';
 import 'package:shopping_app/features/auth/domain/usecases/signup_user.dart';
 import 'package:shopping_app/features/auth/presentation/controllers/auth_user_provider.dart';
 import 'package:shopping_app/features/auth/presentation/controllers/auth_user_state.dart';
 import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
-import 'package:shopping_app/shared/user/domain/usecases/update_user.dart';
 
 class MockSigninUser extends Mock implements SigninUser {}
 
 class MockSignupUser extends Mock implements SignupUser {}
 
-class MockUpdateUser extends Mock implements UpdateUser {}
+class MockSignoutUser extends Mock implements SignoutUser {}
 
 void main() {
   late MockSigninUser mockSigninUser;
   late MockSignupUser mockSignupUser;
-  late MockUpdateUser mockUpdateUser;
+  late MockSignoutUser mockSignoutUser;
   late AuthUserNotifier provider;
 
   const user = UserData(
@@ -34,11 +34,11 @@ void main() {
   setUp(() {
     mockSigninUser = MockSigninUser();
     mockSignupUser = MockSignupUser();
-    mockUpdateUser = MockUpdateUser();
+    mockSignoutUser = MockSignoutUser();
     provider = AuthUserNotifier(
       signinUser: mockSigninUser,
       signupUser: mockSignupUser,
-      updateUser: mockUpdateUser,
+      signoutUser: mockSignoutUser,
     );
     registerFallbackValue(const SigninParams("", ""));
     registerFallbackValue(user);
@@ -52,7 +52,7 @@ void main() {
   );
   group("SigninUser", () {
     test(
-      'should emit AuthUserLoaded on SigninUserEvent with proper data',
+      'should emit AuthUserLoaded on success',
       () async {
         // arrange
         when(() => mockSigninUser(any()))
@@ -95,7 +95,7 @@ void main() {
   });
   group("SignupUser", () {
     test(
-      'should emit AuthUserLoaded on SignupUserEvent with proper data',
+      'should emit AuthUserLoaded on success',
       () async {
         // arrange
         when(() => mockSignupUser.call(any()))
@@ -132,6 +132,50 @@ void main() {
         // act
         provider.signup(user);
         await untilCalled(() => mockSignupUser(any()));
+      },
+    );
+  });
+  group("SignoutUser", () {
+    test(
+      'should emit AuthUserEmpty on success',
+      () async {
+        // arrange
+        when(() => mockSignoutUser.call())
+            .thenAnswer((invocation) async => const Success(success));
+        // assert later
+        expect(
+          provider.stream,
+          emitsInOrder([
+            const TypeMatcher<AuthUserLoading>(),
+            const TypeMatcher<AuthUserEmpty>(),
+          ]),
+        );
+        // act
+        provider.signout();
+        await untilCalled(() => mockSignoutUser());
+        // assert
+        verify(() => mockSignoutUser()).called(1);
+      },
+    );
+    test(
+      'should emit AuthUserError on failure',
+      () async {
+        // arrange
+        when(() => mockSignoutUser.call())
+            .thenAnswer((invocation) async => const Error(AuthFailure()));
+        // assert later
+        expect(
+          provider.stream,
+          emitsInOrder([
+            const TypeMatcher<AuthUserLoading>(),
+            AuthUserError(message: ""),
+          ]),
+        );
+        // act
+        provider.signout();
+        await untilCalled(() => mockSignoutUser());
+        // assert
+        verify(() => mockSignoutUser()).called(1);
       },
     );
   });

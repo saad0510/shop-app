@@ -9,4 +9,6 @@ abstract class AuthRepository {
   Future<AuthResult> signin(String email, String password);
 
   Future<AuthResult> signup(UserData userData);
+
+  Future<Result<Failure, SuccessResult>> signout();
 }

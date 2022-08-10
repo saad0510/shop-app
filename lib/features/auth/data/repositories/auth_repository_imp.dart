@@ -42,6 +42,18 @@ class AuthRepositoryImp implements AuthRepository {
     });
   }
 
+  @override
+  Future<Result<Failure, SuccessResult>> signout() async {
+    try {
+      await _remoteSrc.signout();
+      return const Success(success);
+    } on AuthException catch (e) {
+      return Error(AuthFailure(e.message));
+    } on FirebaseAuthException catch (e) {
+      return Error(AuthFailure(e.message ?? ""));
+    }
+  }
+
   Future<AuthResult> _catchExceptions(
     Future<AuthResult> Function() body,
   ) async {

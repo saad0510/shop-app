@@ -31,6 +31,9 @@ void main() {
           password: any(named: "password"),
         )).thenAnswer((_) async => mockUserCredits);
 
+    when(() => mockFireAuth.signOut()).thenAnswer((_) async => mockUserCredits);
+
+    when(() => mockFireAuth.currentUser).thenReturn(mockUser);
     when(() => mockUserCredits.user).thenReturn(mockUser);
     when(() => mockUser.uid).thenReturn(uid);
   }
@@ -45,13 +48,14 @@ void main() {
 
   void checkNullUser(Function() body) {
     when(() => mockUserCredits.user).thenReturn(null);
+    when(() => mockFireAuth.currentUser).thenReturn(null);
     expect(
       () => body(),
       throwsA(const TypeMatcher<AuthException>()),
     );
   }
 
-  Future<void> checkSigninOrSignup(Future<String> Function() body) async {
+  Future<void> checkReturnUid(Future<String> Function() body) async {
     when(() => mockUser.uid).thenReturn(uid);
     final result = await body();
     expect(result, uid);
@@ -62,7 +66,7 @@ void main() {
     test(
       'should signin the user and return uid on success',
       () async {
-        await checkSigninOrSignup(() => datasource.signin(email, password));
+        await checkReturnUid(() => datasource.signin(email, password));
         verify(
           () => mockFireAuth.signInWithEmailAndPassword(
             email: email,
@@ -84,7 +88,7 @@ void main() {
     test(
       'should signup the user and return uid on success',
       () async {
-        await checkSigninOrSignup(() => datasource.signup(email, password));
+        await checkReturnUid(() => datasource.signup(email, password));
         verify(
           () => mockFireAuth.createUserWithEmailAndPassword(
             email: email,
@@ -98,6 +102,23 @@ void main() {
       'should throw AuthException if user is null',
       () async {
         checkNullUser(() => datasource.signup(email, password));
+      },
+    );
+  });
+
+  group("signout", () {
+    test(
+      'should signout the user and return uid on success',
+      () async {
+        checkReturnUid(() => datasource.signout());
+        verify(() => mockFireAuth.signOut()).called(1);
+        verifyNoMoreInteractions(mockFireAuth);
+      },
+    );
+    test(
+      'should throw AuthException if user is null',
+      () async {
+        checkNullUser(() => datasource.signout());
       },
     );
   });
