@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../../core/extensions/context.dart';
+
 class OtpDigitField extends StatelessWidget {
   const OtpDigitField({
     Key? key,
@@ -22,7 +24,7 @@ class OtpDigitField extends StatelessWidget {
         focusNode: focusNode,
         onChanged: onChanged,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: context.textTheme.bodyText1,
         keyboardType: TextInputType.number,
         validator: (x) => x?.length != 1 ? "" : null,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],

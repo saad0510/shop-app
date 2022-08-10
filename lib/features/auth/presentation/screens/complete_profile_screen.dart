@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context.dart';
 import '../widgets.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class CompleteProfileScreen extends StatelessWidget {
             child: Text(
               "By continuing, you confirm that you agree \nwith our terms and conditions",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.subtitle2,
+              style: context.textTheme.subtitle2,
             ),
           ),
         ],

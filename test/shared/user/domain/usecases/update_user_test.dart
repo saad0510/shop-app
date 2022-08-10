@@ -3,12 +3,12 @@ import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping_app/shared/user/domain/entities/user_data.dart';
 import 'package:shopping_app/shared/user/domain/repositories/user_repository.dart';
-import 'package:shopping_app/shared/user/domain/usecases/save_user.dart';
+import 'package:shopping_app/shared/user/domain/usecases/update_user.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
-  late final SaveUser usecase;
+  late final UpdateUser usecase;
   late final MockUserRepository mockRepo;
 
   const user = UserData(
@@ -21,23 +21,23 @@ void main() {
     address: "address",
   );
 
-  setUpAll(() {
+  setUp(() {
     mockRepo = MockUserRepository();
-    usecase = SaveUser(mockRepo);
+    usecase = UpdateUser(mockRepo);
     registerFallbackValue(user);
   });
 
   test(
-    'should save user to remote database',
+    'should update user with given data on remote database',
     () async {
       // arrange
-      when(() => mockRepo.saveUser(any()))
+      when(() => mockRepo.updateUser(any()))
           .thenAnswer((_) async => const Success(success));
       // act
       final result = await usecase(user);
       // assert
       expect(result, const Success(success));
-      verify(() => mockRepo.saveUser(user)).called(1);
+      verify(() => mockRepo.updateUser(user)).called(1);
       verifyNoMoreInteractions(mockRepo);
     },
   );

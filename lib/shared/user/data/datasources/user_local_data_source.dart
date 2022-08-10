@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../app/strings/error_strings.dart';
 import '../../../../core/errors/exception.dart';
 import '../../../../shared/user/data/models/user_data_model.dart';
 
@@ -29,8 +30,9 @@ class UserLocalDataSourceImp extends UserLocalDataSource {
       USER_DATA_KEY,
       jsonEncode(userData.toMap()),
     );
-    if (success) return;
-    throw const CacheException("unable to save cache for UserDataModel");
+    if (success == false) {
+      throw const CacheException(ErrorStrings.cacheSavingFailed);
+    }
   }
 
   @override
@@ -39,6 +41,6 @@ class UserLocalDataSourceImp extends UserLocalDataSource {
     if (json != null) {
       return UserDataModel.fromMap(jsonDecode(json));
     }
-    throw const CacheException("no cache exits for UserDataModel");
+    throw const CacheException(ErrorStrings.cacheNoUser);
   }
 }

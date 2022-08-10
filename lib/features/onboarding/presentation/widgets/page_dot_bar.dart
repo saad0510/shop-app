@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/constants/durations.dart';
+import '../../../../core/extensions/context.dart';
 
 class PageDotBar extends ConsumerWidget {
   const PageDotBar({
@@ -39,7 +40,7 @@ class PageDot extends StatelessWidget {
       margin: const EdgeInsets.only(right: 8),
       width: active ? 30 : 10,
       decoration: BoxDecoration(
-        color: active ? Theme.of(context).colorScheme.primary : Colors.grey,
+        color: active ? context.colorScheme.primary : Colors.grey,
         borderRadius: BorderRadius.circular(10),
       ),
     );

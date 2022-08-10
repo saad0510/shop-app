@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 extension ContextUtils on BuildContext {
+  // getters
+
   double get width {
     return MediaQuery.of(this).size.width;
   }
@@ -23,6 +25,12 @@ extension ContextUtils on BuildContext {
     return Theme.of(this).textTheme;
   }
 
+  ColorScheme get colorScheme {
+    return Theme.of(this).colorScheme;
+  }
+
+  // routes
+
   void goNamed(String name) async {
     await Navigator.of(this).pushNamed(name);
   }
@@ -36,5 +44,16 @@ extension ContextUtils on BuildContext {
       Navigator.of(this).pop();
     }
     await Navigator.of(this).pushReplacementNamed(name);
+  }
+
+  // widgets
+
+  void snackbar(Widget content) {
+    ScaffoldMessenger.of(this).showSnackBar(
+      SnackBar(
+        content: content,
+        backgroundColor: colorScheme.error,
+      ),
+    );
   }
 }

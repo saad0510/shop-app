@@ -12,22 +12,22 @@ import '../../../../fixtures/fixture_reader.dart';
 class MockSharedPrefs extends Mock implements SharedPreferences {}
 
 void main() {
-  late UserDataModel userDataModel;
   late UserLocalDataSourceImp datasource;
   late MockSharedPrefs mockSharedPrefs;
+
   const cache_fixture = "user_data_cache.json";
   const cache_key = "USER_DATA_KEY";
+  const user = UserDataModel(
+    uid: "asd232heuqwns",
+    email: "acc1@fin.com",
+    password: "test123",
+    firstName: "Saad",
+    lastName: "Bin Khalid",
+    phone: "+923133094567",
+    address: "Street 31, House 2, Area 2B, Landhi 3, Karachi",
+  );
 
   setUp(() {
-    userDataModel = const UserDataModel(
-      uid: "asd232heuqwns",
-      email: "acc1@fin.com",
-      password: "test123",
-      firstName: "Saad",
-      lastName: "Bin Khalid",
-      phone: "+923133094567",
-      address: "Street 31, House 2, Area 2B, Landhi 3, Karachi",
-    );
     mockSharedPrefs = MockSharedPrefs();
     datasource = UserLocalDataSourceImp(sharedPrefs: mockSharedPrefs);
   });
@@ -42,7 +42,7 @@ void main() {
         // act
         final result = await datasource.getLastUserData();
         // assert
-        expect(result, userDataModel);
+        expect(result, user);
         verify(() => mockSharedPrefs.getString(cache_key)).called(1);
         verifyNoMoreInteractions(mockSharedPrefs);
       },
@@ -70,9 +70,9 @@ void main() {
         when(() => mockSharedPrefs.setString(any(), any()))
             .thenAnswer((_) async => true);
         // act
-        await datasource.cacheUserData(userDataModel);
+        await datasource.cacheUserData(user);
         // assert
-        final jsonStr = jsonEncode(userDataModel.toMap());
+        final jsonStr = jsonEncode(user.toMap());
         verify(() => mockSharedPrefs.setString(cache_key, jsonStr)).called(1);
         verifyNoMoreInteractions(mockSharedPrefs);
       },
@@ -85,11 +85,11 @@ void main() {
             .thenAnswer((_) async => false);
         // act and assert
         expect(
-          () => datasource.cacheUserData(userDataModel),
+          () => datasource.cacheUserData(user),
           throwsA(const TypeMatcher<CacheException>()),
         );
         // assert
-        final jsonStr = jsonEncode(userDataModel.toMap());
+        final jsonStr = jsonEncode(user.toMap());
         verify(() => mockSharedPrefs.setString(cache_key, jsonStr)).called(1);
         verifyNoMoreInteractions(mockSharedPrefs);
       },

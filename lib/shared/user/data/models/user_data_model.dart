@@ -34,4 +34,15 @@ class UserDataModel extends UserData {
       address: doc["address"] as String,
     );
   }
+  factory UserDataModel.fromUserData(UserData userData) {
+    return UserDataModel(
+      uid: userData.uid,
+      email: userData.email,
+      password: userData.password,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      phone: userData.phone,
+      address: userData.address,
+    );
+  }
 }

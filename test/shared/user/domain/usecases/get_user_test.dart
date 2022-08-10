@@ -8,39 +8,37 @@ import 'package:shopping_app/shared/user/domain/usecases/get_user.dart';
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
+  late final MockUserRepository mockRepo;
   late final GetUser usecase;
-  late final MockUserRepository repo;
-  late final String uid;
-  late final UserData userData;
 
-  setUpAll(() {
-    uid = "1";
-    userData = const UserData(
-      uid: "1",
-      email: "email",
-      password: "password",
-      firstName: "firstName",
-      lastName: "lastName",
-      phone: "phone",
-      address: "address",
-    );
-    repo = MockUserRepository();
-    usecase = GetUser(repo);
-    registerFallbackValue(userData);
+  const user = UserData(
+    uid: "1",
+    email: "email",
+    password: "password",
+    firstName: "firstName",
+    lastName: "lastName",
+    phone: "phone",
+    address: "address",
+  );
+
+  setUp(() {
+    mockRepo = MockUserRepository();
+    usecase = GetUser(mockRepo);
+    registerFallbackValue(user);
   });
 
   test(
     'should return remote user of given uid',
     () async {
       // arrange
-      when(() => repo.getUser(any()))
-          .thenAnswer((_) async => Success(userData));
+      when(() => mockRepo.getUser(any()))
+          .thenAnswer((_) async => const Success(user));
       // act
-      final result = await usecase(uid);
+      final result = await usecase(user.uid);
       // assert
-      expect(result, Success(userData));
-      verify(() => repo.getUser(uid)).called(1);
-      verifyNoMoreInteractions(repo);
+      expect(result, const Success(user));
+      verify(() => mockRepo.getUser(user.uid)).called(1);
+      verifyNoMoreInteractions(mockRepo);
     },
   );
 }

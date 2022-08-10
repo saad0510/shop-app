@@ -1,11 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'app/router/routes.dart';
 import 'app/themes/app_theme.dart';
+import 'injecetions.dart' as inject;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await inject.init();
+
   runApp(
     ScreenUtilInit(
       designSize: const Size(376, 738),

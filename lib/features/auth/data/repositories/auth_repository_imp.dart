@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import '../../../../core/errors/exception.dart';
@@ -13,7 +14,7 @@ class AuthRepositoryImp implements AuthRepository {
   final GetUser _getUser;
   final SaveUser _saveUser;
 
-  AuthRepositoryImp({
+  const AuthRepositoryImp({
     required AuthRemoteDataSource remoteDataSource,
     required GetUser getUser,
     required SaveUser saveUser,
@@ -23,26 +24,33 @@ class AuthRepositoryImp implements AuthRepository {
 
   @override
   Future<AuthResult> signin(String email, String password) async {
-    try {
+    return _catchExceptions(() async {
       final uid = await _remoteSrc.signin(email, password);
       return _getUser(uid);
-    } on AuthException {
-      return const Error(AuthFailure());
-    }
+    });
   }
 
   @override
   Future<AuthResult> signup(UserData userData) async {
-    try {
+    return _catchExceptions(() async {
       final uid = await _remoteSrc.signup(userData.email, userData.password);
       final userWithUid = userData.copyWith(uid: uid);
       final result = await _saveUser(userWithUid);
-      if (result.isSuccess()) {
-        return Success(userWithUid);
-      }
-      return Error(result.getError()!);
-    } on AuthException {
-      return const Error(AuthFailure());
+      return result.isSuccess()
+          ? Success(userWithUid)
+          : Error(result.getError()!);
+    });
+  }
+
+  Future<AuthResult> _catchExceptions(
+    Future<AuthResult> Function() body,
+  ) async {
+    try {
+      return await body();
+    } on AuthException catch (e) {
+      return Error(AuthFailure(e.message));
+    } on FirebaseAuthException catch (e) {
+      return Error(AuthFailure(e.message ?? ""));
     }
   }
 }

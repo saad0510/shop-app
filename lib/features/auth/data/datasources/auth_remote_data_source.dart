@@ -47,11 +47,11 @@ class AuthRemoteDataSourceImp extends AuthRemoteDataSource {
   Future<String> _signinOrSignupSelector(
     Future<UserCredential> Function() body,
   ) async {
-    final userCredits = await body();
-    final user = userCredits.user;
+    await body();
+    final user = _firebaseAuth.currentUser;
     if (user != null) {
       return user.uid;
     }
-    throw const AuthException("signin failed. user was found null");
+    throw const AuthException("signin/signup failed. returned user was null");
   }
 }

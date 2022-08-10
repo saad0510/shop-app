@@ -1,25 +1,22 @@
-abstract class Failure {
+import 'package:equatable/equatable.dart';
+
+abstract class Failure extends Equatable {
   final String message;
 
-  const Failure(this.message);
+  const Failure([this.message = ""]);
 
   @override
-  bool operator ==(covariant Failure other) {
-    return identical(this, other) || other.message == message;
-  }
-
-  @override
-  int get hashCode => message.hashCode;
+  List<Object?> get props => [message];
 }
 
 class AuthFailure extends Failure {
-  const AuthFailure([String message = ""]) : super(message);
+  const AuthFailure([super.message]);
 }
 
 class CacheFailure extends Failure {
-  const CacheFailure([String message = ""]) : super(message);
+  const CacheFailure([super.message]);
 }
 
 class DatabaseFailure extends Failure {
-  const DatabaseFailure([String message = ""]) : super(message);
+  const DatabaseFailure([super.message]);
 }

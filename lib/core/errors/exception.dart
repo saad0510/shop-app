@@ -1,29 +1,26 @@
-abstract class BaseException implements Exception {
+import 'package:equatable/equatable.dart';
+
+abstract class BaseException extends Equatable implements Exception {
   final String message;
 
-  const BaseException(this.message);
+  const BaseException([this.message = ""]);
 
   @override
-  bool operator ==(covariant BaseException other) {
-    return identical(this, other) || other.message == message;
-  }
-
-  @override
-  int get hashCode => message.hashCode;
+  List<Object?> get props => [message];
 }
 
 class AuthException extends BaseException {
-  const AuthException([String message = ""]) : super(message);
+  const AuthException([super.message]);
 }
 
 class CacheException extends BaseException {
-  const CacheException([String message = ""]) : super(message);
+  const CacheException([super.message]);
 }
 
 class DatabaseException extends BaseException {
-  const DatabaseException([String message = ""]) : super(message);
+  const DatabaseException([super.message]);
 }
 
 class RouteException extends BaseException {
-  const RouteException([String message = ""]) : super(message);
+  const RouteException([super.message]);
 }

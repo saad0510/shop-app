@@ -8,42 +8,36 @@ import 'package:shopping_app/features/auth/domain/usecases/signin_user.dart';
 class MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
-  late MockAuthRepository mockAuthRepo;
+  late MockAuthRepository mockRepo;
   late SigninUser usecase;
 
-  late String email;
-  late String password;
-  late UserData userData;
+  const user = UserData(
+    uid: "1",
+    email: "acc1@fin.com",
+    password: "test123",
+    firstName: "Saad",
+    lastName: "Bin Khalid",
+    phone: "+923133094567",
+    address: "Landhi, Karachi, Pakistan",
+  );
 
   setUp(() {
-    email = "acc1@fin.com";
-    password = "test123";
-
-    userData = const UserData(
-      uid: "1",
-      email: "acc1@fin.com",
-      password: "test123",
-      firstName: "Saad",
-      lastName: "Bin Khalid",
-      phone: "+923133094567",
-      address: "Landhi, Karachi, Pakistan",
-    );
-    mockAuthRepo = MockAuthRepository();
-    usecase = SigninUser(mockAuthRepo);
+    mockRepo = MockAuthRepository();
+    usecase = SigninUser(mockRepo);
   });
 
   test(
     'should signin the user and return user data from database',
     () async {
       // arrange
-      when(() => mockAuthRepo.signin(any(), any()))
-          .thenAnswer((_) async => Success(userData));
+      when(() => mockRepo.signin(any(), any()))
+          .thenAnswer((_) async => const Success(user));
       // act
-      final result = await usecase(SigninParams(email, password));
+      final result = await usecase(SigninParams(user.email, user.password));
       // assert
-      expect(result, Success(userData));
-      verify(() => mockAuthRepo.signin(email, password)).called(1);
-      verifyNoMoreInteractions(mockAuthRepo);
+      expect(result, const Success(user));
+      verify(() => mockRepo.signin(user.email, user.password)).called(1);
+      verifyNoMoreInteractions(mockRepo);
     },
   );
 }

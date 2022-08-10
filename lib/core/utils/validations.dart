@@ -1,3 +1,5 @@
+import '../extensions/string.dart';
+
 // TODO: user regex for validations
 
 class Validator {
@@ -28,13 +30,5 @@ class Validator {
 
   static String? validateConfirmPass(String? value, String? original) {
     return value == original ? null : "Passwords do not match";
-  }
-}
-
-extension on String {
-  bool isValidEmail() {
-    return RegExp(
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
-    ).hasMatch(this);
   }
 }

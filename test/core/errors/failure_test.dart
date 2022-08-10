@@ -2,30 +2,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shopping_app/core/errors/failure.dart';
 
 void main() {
-  late AuthFailure authFailure;
-  late AuthFailure authFailure2;
-  late String expectedFailure;
-
-  setUp(() {
-    expectedFailure = "this is an exception";
-    authFailure = const AuthFailure("this is an exception");
-    authFailure2 = const AuthFailure("this is an exception");
-  });
+  const String errorMsg = "this is an exception";
 
   test(
     'should return the expected message',
     () async {
-      // assert
-      expect(authFailure.message, expectedFailure);
+      const authFailure = AuthFailure(errorMsg);
+      expect(authFailure.message, errorMsg);
     },
   );
 
   test(
     'should return true for equality of failures',
     () async {
-      // act
+      const authFailure = AuthFailure(errorMsg);
+      const authFailure2 = AuthFailure(errorMsg);
       bool result = authFailure == authFailure2;
-      // assert
       expect(result, true);
     },
   );

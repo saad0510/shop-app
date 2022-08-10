@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context.dart';
 import '../../domain/entities/onboarding_page.dart';
 
 class OnBoardingContent extends StatelessWidget {
@@ -14,7 +15,7 @@ class OnBoardingContent extends StatelessWidget {
         const Spacer(),
         Text(
           page.title,
-          style: Theme.of(context).textTheme.headline1,
+          style: context.textTheme.headline1,
         ),
         const SizedBox(height: 8),
         Text(

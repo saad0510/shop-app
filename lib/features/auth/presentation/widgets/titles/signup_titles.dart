@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/extensions/context.dart';
+
 class SignupTitles extends StatelessWidget {
   const SignupTitles({Key? key}) : super(key: key);
 
@@ -9,13 +11,13 @@ class SignupTitles extends StatelessWidget {
       children: [
         Text(
           "Register Account",
-          style: Theme.of(context).textTheme.headline2,
+          style: context.textTheme.headline2,
         ),
         const SizedBox(height: 8),
         Text(
           "Complete your details or continue\n with social media",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: context.textTheme.subtitle1,
         ),
       ],
     );

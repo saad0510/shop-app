@@ -7,13 +7,13 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/user_data.dart';
 import '../repositories/user_repository.dart';
 
-class SaveUser extends UseCase<void, UserData> {
+class UpdateUser extends UseCase<void, UserData> {
   final UserRepository _repo;
 
-  SaveUser(this._repo);
+  UpdateUser(this._repo);
 
   @override
   Future<Result<Failure, SuccessResult>> call(UserData user) async {
-    return _repo.saveUser(user);
+    return _repo.updateUser(user);
   }
 }

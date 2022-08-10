@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:shopping_app/core/usecases/usecase.dart';
-import 'package:shopping_app/shared/user/data/models/user_data_model.dart';
 import 'package:shopping_app/core/errors/exception.dart';
 import 'package:shopping_app/core/errors/failure.dart';
 import 'package:shopping_app/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -23,18 +21,26 @@ void main() {
   late MockSaveUser mockSaveUser;
   late AuthRepositoryImp repo;
 
-  late String uid;
-  late String email;
-  late String password;
-  late UserData userData;
+  const user = UserData(
+    uid: "1",
+    email: "acc1@fin.com",
+    password: "test123",
+    firstName: "Saad",
+    lastName: "Bin Khalid",
+    phone: "+923133094567",
+    address: "Landhi, Karachi, Pakistan",
+  );
 
   void fallbacks() {
-    registerFallbackValue(userData);
-    when(() => mockRemoteSrc.signin(any(), any())).thenAnswer((_) async => uid);
-    when(() => mockRemoteSrc.signup(any(), any())).thenAnswer((_) async => uid);
-    when(() => mockGetUser(any())).thenAnswer((_) async => Success(userData));
+    registerFallbackValue(user);
+    when(() => mockRemoteSrc.signin(any(), any()))
+        .thenAnswer((_) async => user.uid);
+    when(() => mockRemoteSrc.signup(any(), any()))
+        .thenAnswer((_) async => user.uid);
+
+    when(() => mockGetUser(any())).thenAnswer((_) async => const Success(user));
     when(() => mockSaveUser(any()))
-        .thenAnswer((_) async => const Success(Void()));
+        .thenAnswer((_) async => const Success(success));
   }
 
   setUp(() {
@@ -46,21 +52,23 @@ void main() {
       getUser: mockGetUser,
       saveUser: mockSaveUser,
     );
-
-    uid = "1";
-    email = "acc1@fin.com";
-    password = "test123";
-    userData = const UserDataModel(
-      uid: "1",
-      email: "acc1@fin.com",
-      password: "test123",
-      firstName: "Saad",
-      lastName: "Bin Khalid",
-      phone: "+923133094567",
-      address: "Landhi, Karachi, Pakistan",
-    );
     fallbacks();
   });
+
+  Future<Result<Failure, UserData>> checkSignin() async {
+    final result = await repo.signin(user.email, user.password);
+    verify(() => mockRemoteSrc.signin(user.email, user.password)).called(1);
+    verifyNoMoreInteractions(mockRemoteSrc);
+    return result;
+  }
+
+  Future<Result<Failure, UserData>> checkSignup() async {
+    final userDataWithoutUid = user.copyWith(uid: "");
+    final result = await repo.signup(userDataWithoutUid);
+    verify(() => mockRemoteSrc.signup(user.email, user.password)).called(1);
+    verifyNoMoreInteractions(mockRemoteSrc);
+    return result;
+  }
 
   group("signin:", () {
     test(
@@ -68,12 +76,9 @@ void main() {
       () async {
         // arrange
         when(() => mockRemoteSrc.signin(any(), any()))
-            .thenAnswer((_) async => uid);
-        // act
-        await repo.signin(email, password);
-        // assert
-        verify(() => mockRemoteSrc.signin(email, password)).called(1);
-        verifyNoMoreInteractions(mockRemoteSrc);
+            .thenAnswer((_) async => user.uid);
+        // act & assert
+        await checkSignin();
       },
     );
     test(
@@ -81,12 +86,12 @@ void main() {
       () async {
         // arrange
         when(() => mockGetUser(any()))
-            .thenAnswer((_) async => Success(userData));
+            .thenAnswer((_) async => const Success(user));
         // act
-        final result = await repo.signin(email, password);
+        final result = await repo.signin(user.email, user.password);
         // assert
-        expect(result, Success(userData));
-        verify(() => mockGetUser(uid)).called(1);
+        expect(result, const Success(user));
+        verify(() => mockGetUser(user.uid)).called(1);
         verifyNoMoreInteractions(mockGetUser);
       },
     );
@@ -97,11 +102,9 @@ void main() {
         when(() => mockRemoteSrc.signin(any(), any()))
             .thenThrow(const AuthException());
         // act
-        final result = await repo.signin(email, password);
+        final result = await checkSignin();
         // assert
         expect(result, const Error(AuthFailure()));
-        verify(() => mockRemoteSrc.signin(email, password)).called(1);
-        verifyNoMoreInteractions(mockRemoteSrc);
       },
     );
   });
@@ -112,13 +115,9 @@ void main() {
       () async {
         // arrange
         when(() => mockRemoteSrc.signup(any(), any()))
-            .thenAnswer((_) async => uid);
-        // act
-        final userDataWithoutUid = userData.copyWith(uid: "");
-        await repo.signup(userDataWithoutUid);
-        // assert
-        verify(() => mockRemoteSrc.signup(email, password)).called(1);
-        verifyNoMoreInteractions(mockRemoteSrc);
+            .thenAnswer((_) async => user.uid);
+        // act & assert
+        await checkSignup();
       },
     );
     test(
@@ -126,13 +125,13 @@ void main() {
       () async {
         // arrange
         when(() => mockSaveUser(any()))
-            .thenAnswer((_) async => const Success(Void()));
+            .thenAnswer((_) async => const Success(success));
         // act
-        final userDataWithoutUid = userData.copyWith(uid: "");
+        final userDataWithoutUid = user.copyWith(uid: "");
         final result = await repo.signup(userDataWithoutUid);
         // assert
-        expect(result, Success(userData));
-        verify(() => mockSaveUser(userData)).called(1);
+        expect(result, const Success(user));
+        verify(() => mockSaveUser(user)).called(1);
         verifyNoMoreInteractions(mockSaveUser);
       },
     );
@@ -143,11 +142,9 @@ void main() {
         when(() => mockRemoteSrc.signup(any(), any()))
             .thenThrow(const AuthException());
         // act
-        final result = await repo.signup(userData);
+        final result = await checkSignup();
         // assert
         expect(result, const Error(AuthFailure()));
-        verify(() => mockRemoteSrc.signup(email, password)).called(1);
-        verifyNoMoreInteractions(mockRemoteSrc);
       },
     );
   });

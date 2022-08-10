@@ -1,4 +1,6 @@
-class UserData {
+import 'package:equatable/equatable.dart';
+
+class UserData extends Equatable {
   final String uid;
   final String email;
   final String password;
@@ -18,28 +20,8 @@ class UserData {
   });
 
   @override
-  bool operator ==(covariant UserData other) {
-    if (identical(this, other)) return true;
-
-    return other.uid == uid &&
-        other.email == email &&
-        other.password == password &&
-        other.firstName == firstName &&
-        other.lastName == lastName &&
-        other.phone == phone &&
-        other.address == address;
-  }
-
-  @override
-  int get hashCode {
-    return uid.hashCode ^
-        email.hashCode ^
-        password.hashCode ^
-        firstName.hashCode ^
-        lastName.hashCode ^
-        phone.hashCode ^
-        address.hashCode;
-  }
+  List<Object?> get props =>
+      [uid, email, password, firstName, lastName, phone, address];
 
   UserData copyWith({
     String? uid,

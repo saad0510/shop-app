@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context.dart';
+
 class TextAction extends StatelessWidget {
   const TextAction(
     this.text, {
@@ -16,7 +18,7 @@ class TextAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = style ?? Theme.of(context).textTheme.subtitle1;
+    final textStyle = style ?? context.textTheme.subtitle1;
 
     return GestureDetector(
       onTap: onPressed,

@@ -17,87 +17,79 @@ class MockDocumentSnapshot extends Mock
 class MockFirestore extends Mock implements FirebaseFirestore {}
 
 void main() {
-  late MockCollectionRef mockCollectionRef;
-  late MockDocumentRef mockDocRef;
-  late MockDocumentSnapshot mockDocSnapshot;
+  late MockCollectionRef mockCollection;
+  late MockDocumentRef mockDoc;
+  late MockDocumentSnapshot mockDocSnap;
   late MockFirestore mockFirestore;
   late UserRemoteDataSourceImp dataSource;
 
   const users_collection = "/users";
-  late String uid;
-  late UserDataModel userDataModel;
-  late Map<String, dynamic> userMap;
+  const user = UserDataModel(
+    uid: "asd232heuqwns",
+    email: "acc1@fin.com",
+    password: "test123",
+    firstName: "Saad",
+    lastName: "Bin Khalid",
+    phone: "+923133094567",
+    address: "Street 31, House 2, Area 2B, Landhi 3, Karachi",
+  );
+  const userMap = {
+    "uid": "asd232heuqwns",
+    "email": "acc1@fin.com",
+    "password": "test123",
+    "firstName": "Saad",
+    "lastName": "Bin Khalid",
+    "phone": "+923133094567",
+    "address": "Street 31, House 2, Area 2B, Landhi 3, Karachi",
+  };
 
   void fallbacks() {
-    registerFallbackValue(userDataModel);
-    when(() => mockFirestore.collection(any())).thenReturn(mockCollectionRef);
-    when(() => mockCollectionRef.doc(any())).thenReturn(mockDocRef);
-    when(() => mockCollectionRef.add(any()))
-        .thenAnswer((_) async => mockDocRef);
-    when(() => mockDocRef.get()).thenAnswer((_) async => mockDocSnapshot);
+    registerFallbackValue(user);
+    when(() => mockFirestore.collection(any())).thenReturn(mockCollection);
+    when(() => mockCollection.doc(any())).thenReturn(mockDoc);
+    when(() => mockCollection.add(any())).thenAnswer((_) async => mockDoc);
+    when(() => mockDoc.update(any())).thenAnswer((_) async {});
+    when(() => mockDoc.get()).thenAnswer((_) async => mockDocSnap);
   }
 
   setUp(() {
-    mockCollectionRef = MockCollectionRef();
-    mockDocRef = MockDocumentRef();
-    mockDocSnapshot = MockDocumentSnapshot();
+    mockDoc = MockDocumentRef();
+    mockCollection = MockCollectionRef();
+    mockDocSnap = MockDocumentSnapshot();
     mockFirestore = MockFirestore();
     dataSource = UserRemoteDataSourceImp(firestore: mockFirestore);
-
-    uid = "asd232heuqwns";
-    userDataModel = const UserDataModel(
-      uid: "asd232heuqwns",
-      email: "acc1@fin.com",
-      password: "test123",
-      firstName: "Saad",
-      lastName: "Bin Khalid",
-      phone: "+923133094567",
-      address: "Street 31, House 2, Area 2B, Landhi 3, Karachi",
-    );
-    userMap = {
-      "uid": "asd232heuqwns",
-      "email": "acc1@fin.com",
-      "password": "test123",
-      "firstName": "Saad",
-      "lastName": "Bin Khalid",
-      "phone": "+923133094567",
-      "address": "Street 31, House 2, Area 2B, Landhi 3, Karachi",
-    };
     fallbacks();
   });
+
+  void checkGetUser([bool checkError = false]) async {
+    when(() => mockDocSnap.data()).thenReturn(checkError ? null : userMap);
+    if (checkError) {
+      expect(
+        () => dataSource.getUser(user.uid),
+        throwsA(const TypeMatcher<DatabaseException>()),
+      );
+      return;
+    }
+    final result = await dataSource.getUser(user.uid);
+    expect(result, user);
+
+    verify(() => mockFirestore.collection(users_collection)).called(1);
+    verify(() => mockCollection.doc(user.uid)).called(1);
+    verify(() => mockDoc.get()).called(1);
+    verifyNoMoreInteractions(mockFirestore);
+  }
 
   group("getUser:", () {
     test(
       'should return user given user from database on success',
       () async {
-        // arrange
-        when(() => mockDocSnapshot.data()).thenReturn(userMap);
-        // act
-        final result = await dataSource.getUser(uid);
-        // assert
-        expect(result, userDataModel);
-        verify(() => mockFirestore.collection(users_collection)).called(1);
-        verify(() => mockCollectionRef.doc(uid)).called(1);
-        verify(() => mockDocRef.get()).called(1);
-        verify(() => mockDocSnapshot.data()).called(1);
-        verifyNoMoreInteractions(mockFirestore);
+        checkGetUser();
       },
     );
     test(
       'should throw DatabaseException if document does not exits',
       () async {
-        // arrange
-        when(() => mockDocSnapshot.data()).thenAnswer((_) => null);
-        // act & assert
-        expect(
-          () => dataSource.getUser(uid),
-          throwsA(const TypeMatcher<DatabaseException>()),
-        );
-        verify(() => mockFirestore.collection(users_collection)).called(1);
-        verify(() => mockCollectionRef.doc(uid)).called(1);
-        verify(() => mockDocRef.get()).called(1);
-        // verify(() => mockDocSnapshot.data()).called(1);
-        verifyNoMoreInteractions(mockFirestore);
+        checkGetUser(true);
       },
     );
   });
@@ -107,10 +99,24 @@ void main() {
       'should save the user on remote database on success',
       () async {
         // act
-        await dataSource.saveUser(userDataModel);
+        await dataSource.saveUser(user);
         // assert
         verify(() => mockFirestore.collection(users_collection)).called(1);
-        verify(() => mockCollectionRef.add(userMap)).called(1);
+        verify(() => mockCollection.add(userMap)).called(1);
+        verifyNoMoreInteractions(mockFirestore);
+      },
+    );
+  });
+  group("updateUser:", () {
+    test(
+      'should update the user on remote database on success',
+      () async {
+        // act
+        await dataSource.updateUser(user);
+        // assert
+        verify(() => mockFirestore.collection(users_collection)).called(1);
+        verify(() => mockCollection.doc(user.uid)).called(1);
+        verify(() => mockDoc.update(user.toMap())).called(1);
         verifyNoMoreInteractions(mockFirestore);
       },
     );

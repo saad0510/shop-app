@@ -14,15 +14,15 @@ class NoAccountAction extends StatelessWidget {
       children: [
         Text(
           "Don't have an account? ",
-          style: Theme.of(context).textTheme.subtitle1,
+          style: context.textTheme.subtitle1,
         ),
         TextAction(
           "Sign Up",
           onPressed: () => gotoSignup(context),
           underline: false,
-          style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
+          style: context.textTheme.subtitle1?.copyWith(
+            color: context.colorScheme.primary,
+          ),
         ),
       ],
     );

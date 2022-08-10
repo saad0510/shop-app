@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/extensions/context.dart';
+
 class OtpTitles extends StatelessWidget {
   const OtpTitles({Key? key}) : super(key: key);
 
@@ -9,7 +11,7 @@ class OtpTitles extends StatelessWidget {
       children: [
         Text(
           "OTP Verification",
-          style: Theme.of(context).textTheme.headline2,
+          style: context.textTheme.headline2,
         ),
         const SizedBox(height: 8),
         Column(
@@ -17,14 +19,14 @@ class OtpTitles extends StatelessWidget {
             Text(
               "We sent your code to {user.phone}",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: context.textTheme.subtitle1,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "The code will expire in ",
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: context.textTheme.subtitle1,
                 ),
                 TweenAnimationBuilder(
                   tween: Tween<double>(begin: 30, end: 0),
@@ -32,9 +34,7 @@ class OtpTitles extends StatelessWidget {
                   onEnd: () {},
                   builder: (_, double val, __) => Text(
                     val.toStringAsFixed(0),
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
+                    style: context.textTheme.subtitle1
                         ?.copyWith(color: Colors.redAccent),
                   ),
                 ),

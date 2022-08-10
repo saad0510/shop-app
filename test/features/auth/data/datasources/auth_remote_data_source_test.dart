@@ -11,68 +11,71 @@ class MockUserCredential extends Mock implements UserCredential {}
 class MockUser extends Mock implements User {}
 
 void main() {
+  late MockUser mockUser;
   late MockFirebaseAuth mockFireAuth;
   late MockUserCredential mockUserCredits;
-  late MockUser mockUser;
   late AuthRemoteDataSourceImp datasource;
 
-  late String uid;
-  late String email;
-  late String password;
+  const uid = "1";
+  const email = "acc1@fin.com";
+  const password = "test123";
 
   void fallbacks() {
     when(() => mockFireAuth.signInWithEmailAndPassword(
           email: any(named: "email"),
           password: any(named: "password"),
         )).thenAnswer((_) async => mockUserCredits);
+
     when(() => mockFireAuth.createUserWithEmailAndPassword(
           email: any(named: "email"),
           password: any(named: "password"),
         )).thenAnswer((_) async => mockUserCredits);
+
     when(() => mockUserCredits.user).thenReturn(mockUser);
     when(() => mockUser.uid).thenReturn(uid);
   }
 
   setUp(() {
+    mockUser = MockUser();
     mockFireAuth = MockFirebaseAuth();
     mockUserCredits = MockUserCredential();
-    mockUser = MockUser();
     datasource = AuthRemoteDataSourceImp(firebaseAuth: mockFireAuth);
-
-    uid = "1";
-    email = "acc1@fin.com";
-    password = "test123";
     fallbacks();
   });
+
+  void checkNullUser(Function() body) {
+    when(() => mockUserCredits.user).thenReturn(null);
+    expect(
+      () => body(),
+      throwsA(const TypeMatcher<AuthException>()),
+    );
+  }
+
+  Future<void> checkSigninOrSignup(Future<String> Function() body) async {
+    when(() => mockUser.uid).thenReturn(uid);
+    final result = await body();
+    expect(result, uid);
+    verify(() => mockUser.uid).called(1);
+  }
 
   group("signin", () {
     test(
       'should signin the user and return uid on success',
       () async {
-        // arrange
-        when(() => mockUser.uid).thenReturn(uid);
-        // act
-        final result = await datasource.signin(email, password);
-        // assert
-        expect(result, uid);
-        verify(() => mockFireAuth.signInWithEmailAndPassword(
-              email: email,
-              password: password,
-            )).called(1);
-        verify(() => mockUser.uid).called(1);
+        await checkSigninOrSignup(() => datasource.signin(email, password));
+        verify(
+          () => mockFireAuth.signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          ),
+        ).called(1);
         verifyNoMoreInteractions(mockFireAuth);
       },
     );
     test(
       'should throw AuthException if user is null',
-      () async {
-        // arrange
-        when(() => mockUserCredits.user).thenReturn(null);
-        // act & assert
-        expect(
-          () => datasource.signin(email, password),
-          throwsA(const TypeMatcher<AuthException>()),
-        );
+      () {
+        checkNullUser(() => datasource.signin(email, password));
       },
     );
   });
@@ -81,30 +84,20 @@ void main() {
     test(
       'should signup the user and return uid on success',
       () async {
-        // arrange
-        when(() => mockUser.uid).thenReturn(uid);
-        // act
-        final result = await datasource.signup(email, password);
-        // assert
-        expect(result, uid);
-        verify(() => mockFireAuth.createUserWithEmailAndPassword(
-              email: email,
-              password: password,
-            )).called(1);
-        verify(() => mockUser.uid).called(1);
+        await checkSigninOrSignup(() => datasource.signup(email, password));
+        verify(
+          () => mockFireAuth.createUserWithEmailAndPassword(
+            email: email,
+            password: password,
+          ),
+        ).called(1);
         verifyNoMoreInteractions(mockFireAuth);
       },
     );
     test(
       'should throw AuthException if user is null',
       () async {
-        // arrange
-        when(() => mockUserCredits.user).thenReturn(null);
-        // act & assert
-        expect(
-          () => datasource.signup(email, password),
-          throwsA(const TypeMatcher<AuthException>()),
-        );
+        checkNullUser(() => datasource.signup(email, password));
       },
     );
   });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context.dart';
 import '../widgets.dart';
 
 class SignupBottomActions extends StatelessWidget {
@@ -14,7 +15,7 @@ class SignupBottomActions extends StatelessWidget {
         Text(
           "By continuing, you confirm that you agree \nwith our terms and conditions",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle2,
+          style: context.textTheme.subtitle2,
         ),
       ],
     );

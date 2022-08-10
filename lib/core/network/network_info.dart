@@ -4,13 +4,12 @@ abstract class NetworkInfo {
   Future<bool> get isConnected;
 }
 
-// TODO: make dependencies private
-
 class NetworkInfoImp extends NetworkInfo {
-  final DataConnectionChecker dataConnectionChecker;
+  final DataConnectionChecker _checker;
 
-  NetworkInfoImp({required this.dataConnectionChecker});
+  NetworkInfoImp({required DataConnectionChecker dataConnectionChecker})
+      : _checker = dataConnectionChecker;
 
   @override
-  Future<bool> get isConnected => dataConnectionChecker.hasConnection;
+  Future<bool> get isConnected => _checker.hasConnection;
 }
