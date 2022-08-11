@@ -10,7 +10,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(authUserProvider);
+    final state = ref.watch(userProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              ref.read(authUserProvider.notifier).signout();
+              ref.read(userProvider.notifier).signout();
               context.goReplaceNamed(Routes.signin);
             },
             icon: const Icon(Icons.logout),
@@ -26,7 +26,7 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       body: Center(
-        child: state is AuthUserLoaded
+        child: state is UserLoaded
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

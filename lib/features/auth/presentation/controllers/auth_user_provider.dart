@@ -7,20 +7,20 @@ import '../../domain/usecases/signin_user.dart';
 import '../../domain/usecases/signout_user.dart';
 import '../../domain/usecases/signup_user.dart';
 import '../../domain/usecases/update_user.dart';
-import 'auth_user_state.dart';
+import 'user_state.dart';
 
-class AuthUserNotifier extends StateNotifier<AuthUserState> {
+class UserNotifier extends StateNotifier<UserState> {
   final SigninUser signinUsecase;
   final SignupUser signupUsecase;
   final SignoutUser signoutUsecase;
   final UpdateUser updateUsecase;
 
-  AuthUserNotifier({
+  UserNotifier({
     required this.signinUsecase,
     required this.signupUsecase,
     required this.signoutUsecase,
     required this.updateUsecase,
-  }) : super(AuthUserEmpty());
+  }) : super(UserEmpty());
 
   Future<void> signin(String email, String password) async {
     await _runEvent(
@@ -33,11 +33,11 @@ class AuthUserNotifier extends StateNotifier<AuthUserState> {
   }
 
   Future<void> signout() async {
-    state = AuthUserLoading();
+    state = UserLoading();
     final result = await signoutUsecase();
     result.when(
-      (error) => state = AuthUserError(message: error.message),
-      (_) => state = AuthUserEmpty(),
+      (error) => state = UserError(message: error.message),
+      (_) => state = UserEmpty(),
     );
   }
 
@@ -47,41 +47,39 @@ class AuthUserNotifier extends StateNotifier<AuthUserState> {
     String phone = "",
     String address = "",
   }) async {
-    if (state is! AuthUserLoaded) {
-      state = AuthUserError(
-        message: "Cannot update a user unless he/she is logged in",
-      );
+    if (state is! UserLoaded) {
+      state = UserError(message: "user needs to be logged in for update");
     }
-    final oldUser = (state as AuthUserLoaded).userData;
+    final oldUser = (state as UserLoaded).userData;
     final newUser = oldUser.copyWith(
       firstName: firstName,
       lastName: lastName,
       phone: phone,
       address: address,
     );
-    state = AuthUserLoading();
+    state = UserLoading();
 
     final result = await updateUsecase(newUser);
     result.when(
-      (error) => state = AuthUserError(message: error.message),
-      (_) => state = AuthUserLoaded(userData: newUser),
+      (error) => state = UserError(message: error.message),
+      (_) => state = UserLoaded(userData: newUser),
     );
   }
 
   Future<void> _runEvent(Future<AuthResult> Function() body) async {
-    state = AuthUserLoading();
+    state = UserLoading();
     final result = await body();
     result.when(
       (error) {
-        state = AuthUserError(message: error.message);
+        state = UserError(message: error.message);
       },
       (userData) {
-        state = AuthUserLoaded(userData: userData);
+        state = UserLoaded(userData: userData);
       },
     );
   }
 }
 
-final authUserProvider = StateNotifierProvider<AuthUserNotifier, AuthUserState>(
-  (ref) => locator<AuthUserNotifier>(),
+final userProvider = StateNotifierProvider<UserNotifier, UserState>(
+  (ref) => locator<UserNotifier>(),
 );

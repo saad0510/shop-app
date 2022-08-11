@@ -20,8 +20,8 @@ class AuthStateButton extends StatelessWidget {
       onPressed: onPressed,
       child: Consumer(
         builder: (_, ref, __) {
-          final state = ref.watch(authUserProvider);
-          if (state is AuthUserLoading) {
+          final state = ref.watch(userProvider);
+          if (state is UserLoading) {
             return CircularProgressIndicator(
               color: context.colorScheme.background,
             );

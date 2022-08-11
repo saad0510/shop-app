@@ -6,7 +6,7 @@ import 'package:shopping_app/features/auth/domain/usecases/signin_user.dart';
 import 'package:shopping_app/features/auth/domain/usecases/signout_user.dart';
 import 'package:shopping_app/features/auth/domain/usecases/signup_user.dart';
 import 'package:shopping_app/features/auth/presentation/controllers/auth_user_provider.dart';
-import 'package:shopping_app/features/auth/presentation/controllers/auth_user_state.dart';
+import 'package:shopping_app/features/auth/presentation/controllers/user_state.dart';
 import 'package:shopping_app/features/auth/domain/entities/user_data.dart';
 import 'package:shopping_app/features/auth/domain/usecases/update_user.dart';
 
@@ -23,7 +23,7 @@ void main() {
   late MockSignupUser mockSignupUser;
   late MockSignoutUser mockSignoutUser;
   late MockUpdateUser mockUpdateUser;
-  late AuthUserNotifier provider;
+  late UserNotifier provider;
 
   const user = UserData(
     uid: "1",
@@ -40,11 +40,11 @@ void main() {
     mockSignupUser = MockSignupUser();
     mockSignoutUser = MockSignoutUser();
     mockUpdateUser = MockUpdateUser();
-    provider = AuthUserNotifier(
+    provider = UserNotifier(
       signinUsecase: mockSigninUser,
       signupUsecase: mockSignupUser,
       signoutUsecase: mockSignoutUser,
-      updateUsecase: mockUpdateUser,
+      updateUsecase: mockUpdateUser, // TODO: test update user
     );
     registerFallbackValue(const SigninParams("", ""));
     registerFallbackValue(user);
@@ -53,7 +53,7 @@ void main() {
   test(
     'should emit initial state as AuthUserEmpty',
     () async {
-      expect(provider.debugState, const TypeMatcher<AuthUserEmpty>());
+      expect(provider.debugState, const TypeMatcher<UserEmpty>());
     },
   );
   group("SigninUser", () {
@@ -67,8 +67,8 @@ void main() {
         expect(
           provider.stream,
           emitsInOrder([
-            const TypeMatcher<AuthUserLoading>(),
-            AuthUserLoaded(userData: user),
+            const TypeMatcher<UserLoading>(),
+            UserLoaded(userData: user),
           ]),
         );
         // act
@@ -89,8 +89,8 @@ void main() {
         expect(
           provider.stream,
           emitsInOrder([
-            const TypeMatcher<AuthUserLoading>(),
-            AuthUserError(message: ""),
+            const TypeMatcher<UserLoading>(),
+            UserError(message: ""),
           ]),
         );
         // act
@@ -110,8 +110,8 @@ void main() {
         expect(
           provider.stream,
           emitsInOrder([
-            const TypeMatcher<AuthUserLoading>(),
-            AuthUserLoaded(userData: user),
+            const TypeMatcher<UserLoading>(),
+            UserLoaded(userData: user),
           ]),
         );
         // act
@@ -131,8 +131,8 @@ void main() {
         expect(
           provider.stream,
           emitsInOrder([
-            const TypeMatcher<AuthUserLoading>(),
-            AuthUserError(message: ""),
+            const TypeMatcher<UserLoading>(),
+            UserError(message: ""),
           ]),
         );
         // act
@@ -152,8 +152,8 @@ void main() {
         expect(
           provider.stream,
           emitsInOrder([
-            const TypeMatcher<AuthUserLoading>(),
-            const TypeMatcher<AuthUserEmpty>(),
+            const TypeMatcher<UserLoading>(),
+            const TypeMatcher<UserEmpty>(),
           ]),
         );
         // act
@@ -173,8 +173,8 @@ void main() {
         expect(
           provider.stream,
           emitsInOrder([
-            const TypeMatcher<AuthUserLoading>(),
-            AuthUserError(message: ""),
+            const TypeMatcher<UserLoading>(),
+            UserError(message: ""),
           ]),
         );
         // act

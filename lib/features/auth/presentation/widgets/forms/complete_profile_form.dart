@@ -27,11 +27,11 @@ class _CompleteProfileFormState extends ConsumerState<CompleteProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AuthUserState>(authUserProvider, (_, state) {
-      if (state is AuthUserLoaded) {
+    ref.listen<UserState>(userProvider, (_, state) {
+      if (state is UserLoaded) {
         context.goReplaceAllNamed(Routes.home);
       }
-      if (state is AuthUserError) {
+      if (state is UserError) {
         context.snackbar(Text(state.message));
       }
     });
@@ -89,7 +89,7 @@ class _CompleteProfileFormState extends ConsumerState<CompleteProfileForm> {
   void register() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      ref.read(authUserProvider.notifier).update(
+      ref.read(userProvider.notifier).update(
             firstName: firstName,
             lastName: lastName,
             phone: phone,

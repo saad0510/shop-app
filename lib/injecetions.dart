@@ -26,7 +26,7 @@ Future<void> init() async {
   // FEATURES
   // - controllers
   locator.registerFactory(
-    () => AuthUserNotifier(
+    () => UserNotifier(
       signinUsecase: locator(),
       signupUsecase: locator(),
       signoutUsecase: locator(),

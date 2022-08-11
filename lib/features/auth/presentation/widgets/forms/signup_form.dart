@@ -25,11 +25,11 @@ class _SignupFormState extends ConsumerState<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AuthUserState>(authUserProvider, (_, state) {
-      if (state is AuthUserLoaded) {
+    ref.listen<UserState>(userProvider, (_, state) {
+      if (state is UserLoaded) {
         context.goReplaceAllNamed(Routes.completeProfile);
       }
-      if (state is AuthUserError) {
+      if (state is UserError) {
         context.snackbar(Text(state.message));
       }
     });
@@ -76,7 +76,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
   void register() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      ref.read(authUserProvider.notifier).signup(
+      ref.read(userProvider.notifier).signup(
             UserData.only(email: email, password: password),
           );
     }

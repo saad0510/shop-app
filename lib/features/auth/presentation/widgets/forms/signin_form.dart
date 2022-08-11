@@ -23,11 +23,11 @@ class _SigninFormState extends ConsumerState<SigninForm> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AuthUserState>(authUserProvider, (_, state) {
-      if (state is AuthUserLoaded) {
-        context.goReplaceAllNamed(Routes.home);
+    ref.listen<UserState>(userProvider, (_, state) {
+      if (state is UserLoaded) {
+        context.goReplaceAllNamed(Routes.signinSuccess);
       }
-      if (state is AuthUserError) {
+      if (state is UserError) {
         context.snackbar(Text(state.message));
       }
     });
@@ -74,7 +74,7 @@ class _SigninFormState extends ConsumerState<SigninForm> {
   Future<void> signin() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      await ref.read(authUserProvider.notifier).signin(email, password);
+      await ref.read(userProvider.notifier).signin(email, password);
     }
   }
 }
